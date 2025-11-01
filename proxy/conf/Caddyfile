@@ -17,9 +17,9 @@ www.jsrspaces.com {
 }
 
 # Non-www redirect to www (apex domain)
+# Caddy will automatically get SSL certificate for this domain too
 jsrspaces.com {
-    encode gzip
-    # Redirect all requests to www subdomain
+    # Redirect HTTP to HTTPS first, then to www
     redir https://www.jsrspaces.com{uri} permanent
 }
 
