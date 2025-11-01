@@ -40,15 +40,32 @@ check_docker() {
         exit 1
     fi
     
-    # Detect docker compose command
+    # Check if user can run docker (might need sudo or docker group)
+    if ! docker ps &> /dev/null 2>&1; then
+        print_warning "Cannot run docker commands. Try:"
+        print_warning "  sudo usermod -aG docker $USER"
+        print_warning "  Then log out and back in, or use: sudo ./manage.sh"
+        print_error "Or run with sudo if you have sudo access"
+        exit 1
+    fi
+    
+    # Detect docker compose command (try plugin first, then standalone)
     if docker compose version &> /dev/null 2>&1; then
         DOCKER_COMPOSE_CMD="docker compose"
-    elif command -v docker-compose &> /dev/null; then
+        print_status "Using: docker compose (plugin)"
+    elif command -v docker-compose &> /dev/null && docker-compose version &> /dev/null 2>&1; then
         DOCKER_COMPOSE_CMD="docker-compose"
+        print_status "Using: docker-compose (standalone)"
     else
         print_error "Docker Compose is not installed."
-        print_error "Install with: sudo yum install docker-compose-plugin -y"
-        print_error "Or: sudo apt install docker-compose -y"
+        print_error ""
+        print_error "Install Docker Compose plugin:"
+        print_error "  Amazon Linux 2: sudo yum install docker-compose-plugin -y"
+        print_error "  Ubuntu/Debian: sudo apt install docker-compose-plugin -y"
+        print_error ""
+        print_error "OR install standalone docker-compose:"
+        print_error "  curl -L \"https://github.com/docker/compose/releases/latest/download/docker-compose-$(uname -s)-$(uname -m)\" -o /usr/local/bin/docker-compose"
+        print_error "  sudo chmod +x /usr/local/bin/docker-compose"
         exit 1
     fi
 }

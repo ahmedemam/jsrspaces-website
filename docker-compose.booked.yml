@@ -23,10 +23,8 @@ services:
       retries: 5
 
   booked:
-    # Build custom image with PHP extensions
-    build:
-      context: ./booked
-      dockerfile: Dockerfile
+    # Use PHP Apache image with extensions installed via entrypoint
+    image: php:8.2-apache
     restart: unless-stopped
     container_name: jsrspaces_booked
     depends_on:
@@ -41,6 +39,15 @@ services:
     environment:
       - PHP_TIMEZONE=UTC
       - APACHE_DOCUMENT_ROOT=/var/www/html/Web
+    # Install PHP extensions and configure Apache on startup
+    entrypoint: |
+      bash -c "
+      docker-php-ext-install pdo pdo_mysql mysqli &&
+      a2enmod rewrite &&
+      sed -ri -e 's|/var/www/html|/var/www/html/Web|g' /etc/apache2/sites-available/*.conf &&
+      sed -ri -e 's|/var/www/|/var/www/html/Web|g' /etc/apache2/apache2.conf /etc/apache2/conf-available/*.conf &&
+      exec apache2-foreground
+      "
     networks:
       - jsrspaces_network
     healthcheck:
@@ -48,5 +55,5 @@ services:
       interval: 30s
       timeout: 10s
       retries: 5
-      start_period: 60s
+      start_period: 120s
 
