@@ -16,9 +16,11 @@ www.jsrspaces.com {
     }
 }
 
-# Non-www redirect to www
+# Non-www redirect to www (apex domain)
 jsrspaces.com {
-    redir https://www.jsrspaces.com{uri} 308
+    encode gzip
+    # Redirect all requests to www subdomain
+    redir https://www.jsrspaces.com{uri} permanent
 }
 
 # ERPNext - Enterprise Resource Planning
