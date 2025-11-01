@@ -1,35 +1,49 @@
 # Cobot - Coworking Space Management Platform
-# Note: Cobot is primarily a SaaS platform
-# This configuration is for a self-hosted alternative or community edition if available
-# If official self-hosted version exists, update image accordingly
+# Configuration Options:
+# 1. Proxy to Cobot SaaS via main proxy (see proxy/conf/Caddyfile)
+#    - Uses custom domain cobot.jsrspaces.com
+#    - Requires DNS CNAME: cobot.jsrspaces.com -> domains.cobot.me
+#    - Configure custom domain in Cobot admin: Customize » Domain
+#
+# 2. Self-hosted Cobot (when available)
+#    - Uncomment services section below when Docker image becomes available
 
-services:
-  # Note: Cobot doesn't have an official self-hosted Docker image
-  # Alternatives: Use ERPNext (already added) or a combination of tools
-  # If a community/unofficial image exists, replace the placeholder below
+# services:
+  # Self-hosted Cobot Services (uncomment when available)
+  # Uncomment the services: line above and configure when a self-hosted Docker image becomes available
   
-  # Placeholder - Update when Cobot self-hosted option becomes available
   # cobot_db:
   #   image: postgres:15-alpine
   #   restart: unless-stopped
   #   container_name: jsrspaces_cobot_db
   #   environment:
   #     - POSTGRES_USER=cobot
-  #     - POSTGRES_PASSWORD=cobot_password_change_me
+  #     - POSTGRES_PASSWORD=${COBOT_DB_PASSWORD:-cobot_password_change_me}
   #     - POSTGRES_DB=cobot
   #   volumes:
   #     - jsrspaces_cobot_db:/var/lib/postgresql/data
   #   networks:
   #     - jsrspaces_network
+  #   healthcheck:
+  #     test: ["CMD-SHELL", "pg_isready -U cobot"]
+  #     interval: 10s
+  #     timeout: 5s
+  #     retries: 5
 
   # cobot:
-  #   image: cobot/cobot:latest  # Update with actual image if available
+  #   image: cobot/cobot:latest  # Update with actual image when available
   #   restart: unless-stopped
   #   container_name: jsrspaces_cobot
   #   depends_on:
-  #     - cobot_db
+  #     cobot_db:
+  #       condition: service_healthy
   #   environment:
-  #     - DATABASE_URL=postgresql://cobot:cobot_password_change_me@cobot_db:5432/cobot
+  #     - DATABASE_URL=postgresql://cobot:${COBOT_DB_PASSWORD:-cobot_password_change_me}@cobot_db:5432/cobot
+  #     - SECRET_KEY_BASE=${COBOT_SECRET_KEY:-change_me_to_secure_random_string}
+  #     - RAILS_ENV=production
+  #   volumes:
+  #     - jsrspaces_cobot_data:/app/storage
+  #     - jsrspaces_cobot_logs:/app/log
   #   networks:
   #     - jsrspaces_network
 

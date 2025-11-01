@@ -4,6 +4,22 @@
 
 Cobot is a popular coworking space management platform, but it is **primarily a SaaS (Software as a Service) solution** and does not have an official self-hosted version available.
 
+## ✅ Cobot Integration Configured
+
+**Cobot integration is now set up!** You can use Cobot's SaaS service with your custom domain.
+
+- ✅ Configuration files ready
+- ✅ Proxy routing configured for `cobot.jsrspaces.com`
+- ✅ See `COBOT-SETUP.md` for complete setup instructions
+
+### Quick Setup
+
+1. Add DNS CNAME: `cobot.jsrspaces.com` → `domains.cobot.me`
+2. Configure custom domain in Cobot admin panel
+3. Start services: `./manage.sh start`
+
+For detailed instructions, see **[COBOT-SETUP.md](./COBOT-SETUP.md)**.
+
 ## Self-Hosted Alternatives
 
 Since Cobot doesn't offer self-hosted deployment, we recommend using a combination of the tools already in this infrastructure:

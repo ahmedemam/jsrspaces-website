@@ -22,4 +22,9 @@ volumes:
   jsrspaces_erp_redis_cache:
   jsrspaces_erp_redis_queue:
   jsrspaces_erp_redis_socketio:
+  
+  # Cobot volumes (for self-hosted when available)
+  jsrspaces_cobot_db:
+  jsrspaces_cobot_data:
+  jsrspaces_cobot_logs:
 
