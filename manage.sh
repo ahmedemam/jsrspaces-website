@@ -88,6 +88,15 @@ start() {
     fi
     
     $DOCKER_COMPOSE_CMD -f $COMPOSE_FILE ps
+    
+    # Show Cobot status if status container exists
+    if docker ps -a --format "{{.Names}}" | grep -q jsrspaces_cobot_status; then
+        echo ""
+        print_status "Cobot integration status:"
+        docker logs jsrspaces_cobot_status 2>&1 | tail -15 || true
+    fi
+    
+    echo ""
     print_warning "Cobot Setup: Ensure DNS CNAME is configured (cobot.jsrspaces.com -> domains.cobot.me)"
     print_warning "Cobot Setup: Configure custom domain in Cobot admin panel"
     print_status "Access services:"

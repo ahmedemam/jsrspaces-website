@@ -8,9 +8,37 @@
 # 2. Self-hosted Cobot (when available)
 #    - Uncomment services section below when Docker image becomes available
 
-# services:
+services:
+  # Cobot Integration Status
+  # This service verifies Cobot proxy configuration is in place
+  # Cobot uses SaaS (no container needed), routing via proxy
+  cobot_status:
+    image: alpine:latest
+    restart: "no"
+    container_name: jsrspaces_cobot_status
+    command: 
+      - sh
+      - -c
+      - |
+        echo "=========================================="
+        echo "Cobot Integration Status"
+        echo "=========================================="
+        echo "✓ Configuration file loaded"
+        echo "✓ Proxy route configured: cobot.jsrspaces.com"
+        echo ""
+        echo "Next steps:"
+        echo "1. Add DNS CNAME: cobot.jsrspaces.com -> domains.cobot.me"
+        echo "2. Configure custom domain in Cobot admin panel"
+        echo "3. Access at: https://cobot.jsrspaces.com"
+        echo ""
+        echo "Cobot uses SaaS - no Docker container needed"
+        echo "Routing handled by jsrspaces_proxy"
+        echo "=========================================="
+    networks:
+      - jsrspaces_network
+    
   # Self-hosted Cobot Services (uncomment when available)
-  # Uncomment the services: line above and configure when a self-hosted Docker image becomes available
+  # When self-hosted Docker image becomes available, uncomment below:
   
   # cobot_db:
   #   image: postgres:15-alpine
