@@ -106,9 +106,9 @@ status() {
 logs() {
     SERVICE=${1:-""}
     if [ -z "$SERVICE" ]; then
-        $DOCKER_COMPOSE_CMD -f $COMPOSE_FILE logs -f
+        $DOCKER_COMPOSE_CMD -f $COMPOSE_FILE logs --tail=100
     else
-        $DOCKER_COMPOSE_CMD -f $COMPOSE_FILE logs -f $SERVICE
+        $DOCKER_COMPOSE_CMD -f $COMPOSE_FILE logs --tail=100 "$SERVICE"
     fi
 }
 
