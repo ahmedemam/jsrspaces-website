@@ -76,13 +76,24 @@ start() {
     check_docker
     $DOCKER_COMPOSE_CMD -f $COMPOSE_FILE up -d
     print_status "Services started"
+    
+    # Reload proxy to pick up any new routes (like Cobot)
+    if docker ps | grep -q jsrspaces_proxy; then
+        print_status "Reloading proxy configuration..."
+        docker exec jsrspaces_proxy caddy reload --config /etc/caddy/Caddyfile 2>&1 || {
+            print_warning "Proxy reload failed, restarting proxy..."
+            $DOCKER_COMPOSE_CMD -f $COMPOSE_FILE restart proxy
+            sleep 2
+        }
+    fi
+    
     $DOCKER_COMPOSE_CMD -f $COMPOSE_FILE ps
     print_warning "Cobot Setup: Ensure DNS CNAME is configured (cobot.jsrspaces.com -> domains.cobot.me)"
     print_warning "Cobot Setup: Configure custom domain in Cobot admin panel"
     print_status "Access services:"
     print_status "  Website: https://www.jsrspaces.com"
     print_status "  ERPNext: https://erp.jsrspaces.com"
-    print_status "  Cobot: https://cobot.jsrspaces.com"
+    print_status "  Cobot: https://cobot.jsrspaces.com (proxy routing - no container needed)"
 }
 
 # Stop services
@@ -163,6 +174,7 @@ Commands:
     status      Show service status
     logs [svc]  Show logs (optionally for specific service)
     update      Update and restart all services
+    proxy-reload Reload proxy configuration (after Caddyfile changes)
     erp-init    Initialize ERPNext (run after first start)
     clean       Remove all containers, networks, and volumes
     help        Show this help message
@@ -181,6 +193,39 @@ Services:
 Note: Cobot requires DNS CNAME configuration and custom domain setup in Cobot admin.
       See COBOT-SETUP.md for details.
 EOF
+}
+
+# Reload Caddy proxy configuration
+proxy_reload() {
+    print_header "Reloading Caddy Proxy Configuration"
+    check_docker
+    
+    if ! docker ps | grep -q jsrspaces_proxy; then
+        print_error "Proxy container is not running!"
+        print_status "Starting proxy..."
+        $DOCKER_COMPOSE_CMD -f $COMPOSE_FILE up -d proxy
+        sleep 3
+    fi
+    
+    print_status "Validating Caddyfile syntax..."
+    docker exec jsrspaces_proxy caddy validate --config /etc/caddy/Caddyfile 2>&1 || {
+        print_error "Caddyfile has syntax errors!"
+        exit 1
+    }
+    
+    print_status "Reloading Caddy configuration..."
+    if docker exec jsrspaces_proxy caddy reload --config /etc/caddy/Caddyfile 2>&1; then
+        print_status "Caddy configuration reloaded successfully"
+        print_status "New routes (like Cobot) should now be active"
+    else
+        print_warning "Could not reload Caddy config. Restarting proxy..."
+        $DOCKER_COMPOSE_CMD -f $COMPOSE_FILE restart proxy
+        sleep 3
+        print_status "Proxy restarted"
+    fi
+    
+    print_status "Checking proxy logs..."
+    docker logs jsrspaces_proxy --tail 20 | grep -i -E "cobot|error|reload" || echo "No relevant logs"
 }
 
 # ERPNext initialization helper
@@ -290,6 +335,9 @@ case "${1:-help}" in
         ;;
     update)
         update
+        ;;
+    proxy-reload)
+        proxy_reload
         ;;
     clean)
         clean
