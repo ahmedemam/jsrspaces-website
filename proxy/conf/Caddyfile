@@ -34,18 +34,6 @@ erp.jsrspaces.com {
     }
 }
 
-# Booked Scheduler - Resource Booking System
-booked.jsrspaces.com {
-    encode gzip
-    reverse_proxy booked:80 {
-        header_up Host {host}
-        header_up X-Real-IP {remote}
-        header_up X-Forwarded-For {remote}
-        header_up X-Forwarded-Host {host}
-        header_up X-Forwarded-Proto https
-    }
-}
-
 # Optional: admin panel or API subdomain
 # admin.jsrspaces.com {
 #     encode gzip

@@ -164,7 +164,6 @@ Services:
     - proxy     Caddy reverse proxy (SSL/TLS)
     - website   Nginx web server
     - erp       ERPNext (backend, frontend, database, workers)
-    - booked    Booked Scheduler (resource booking system)
 EOF
 }
 

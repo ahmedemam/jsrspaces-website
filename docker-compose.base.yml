@@ -22,11 +22,4 @@ volumes:
   jsrspaces_erp_redis_cache:
   jsrspaces_erp_redis_queue:
   jsrspaces_erp_redis_socketio:
-  
-  # Booked Scheduler volumes
-  jsrspaces_booked_db:
-  jsrspaces_booked_data:
-  
-  # Cobot volumes (if self-hosted version becomes available)
-  # jsrspaces_cobot_db:
 

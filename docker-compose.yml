@@ -6,6 +6,4 @@ include:
   - docker-compose.proxy.yml
   - docker-compose.website.yml
   - docker-compose.erp.yml
-  - docker-compose.booked.yml
-  # - docker-compose.cobot.yml  # Uncomment when Cobot self-hosted version is available
 

@@ -44,8 +44,13 @@ services:
       bash -c "
       docker-php-ext-install pdo pdo_mysql mysqli &&
       a2enmod rewrite &&
-      sed -ri -e 's|/var/www/html|/var/www/html/Web|g' /etc/apache2/sites-available/*.conf &&
-      sed -ri -e 's|/var/www/|/var/www/html/Web|g' /etc/apache2/apache2.conf /etc/apache2/conf-available/*.conf &&
+      # If Web directory exists, use it as document root, otherwise use html
+      if [ -d /var/www/html/Web ]; then
+        sed -ri -e 's|DocumentRoot /var/www/html|DocumentRoot /var/www/html/Web|g' /etc/apache2/sites-available/*.conf &&
+        sed -ri -e 's|<Directory /var/www/html>|<Directory /var/www/html/Web>|g' /etc/apache2/sites-available/*.conf &&
+        sed -ri -e 's|</Directory>|</Directory>|g' /etc/apache2/sites-available/*.conf
+      fi &&
+      chown -R www-data:www-data /var/www/html &&
       exec apache2-foreground
       "
     networks:
