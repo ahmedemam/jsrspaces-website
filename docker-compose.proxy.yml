@@ -1,0 +1,18 @@
+# Caddy Reverse Proxy
+# Handles SSL certificates and routing
+
+services:
+  proxy:
+    image: caddy:2-alpine
+    restart: unless-stopped
+    container_name: jsrspaces_proxy
+    ports:
+      - "80:80"
+      - "443:443"
+    volumes:
+      - ./proxy/conf/Caddyfile:/etc/caddy/Caddyfile:ro
+      - jsrspaces_caddy_data:/data
+      - jsrspaces_caddy_config:/config
+    networks:
+      - jsrspaces_network
+

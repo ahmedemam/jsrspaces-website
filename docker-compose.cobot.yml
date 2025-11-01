@@ -1,0 +1,35 @@
+# Cobot - Coworking Space Management Platform
+# Note: Cobot is primarily a SaaS platform
+# This configuration is for a self-hosted alternative or community edition if available
+# If official self-hosted version exists, update image accordingly
+
+services:
+  # Note: Cobot doesn't have an official self-hosted Docker image
+  # Alternatives: Use ERPNext (already added) or a combination of tools
+  # If a community/unofficial image exists, replace the placeholder below
+  
+  # Placeholder - Update when Cobot self-hosted option becomes available
+  # cobot_db:
+  #   image: postgres:15-alpine
+  #   restart: unless-stopped
+  #   container_name: jsrspaces_cobot_db
+  #   environment:
+  #     - POSTGRES_USER=cobot
+  #     - POSTGRES_PASSWORD=cobot_password_change_me
+  #     - POSTGRES_DB=cobot
+  #   volumes:
+  #     - jsrspaces_cobot_db:/var/lib/postgresql/data
+  #   networks:
+  #     - jsrspaces_network
+
+  # cobot:
+  #   image: cobot/cobot:latest  # Update with actual image if available
+  #   restart: unless-stopped
+  #   container_name: jsrspaces_cobot
+  #   depends_on:
+  #     - cobot_db
+  #   environment:
+  #     - DATABASE_URL=postgresql://cobot:cobot_password_change_me@cobot_db:5432/cobot
+  #   networks:
+  #     - jsrspaces_network
+

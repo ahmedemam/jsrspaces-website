@@ -1,0 +1,21 @@
+# Build outputs
+dist/
+build/
+.next/
+out/
+
+# Environment files
+.env
+.env.local
+.env.*.local
+
+# Node modules (if applicable)
+node_modules/
+
+# Docker volumes (if tracked)
+*.log
+
+# OS files
+.DS_Store
+Thumbs.db
+

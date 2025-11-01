@@ -1,0 +1,32 @@
+# Base configuration: shared network and volumes
+
+networks:
+  jsrspaces_network:
+    driver: bridge
+
+volumes:
+  # Caddy volumes
+  jsrspaces_caddy_data:
+  jsrspaces_caddy_config:
+  
+  # Website volumes (for static builds)
+  jsrspaces_website_data:
+  
+  # Database volumes (if needed for bookings/members)
+  jsrspaces_db:
+  
+  # ERPNext volumes
+  jsrspaces_erp_db:
+  jsrspaces_erp_sites:
+  jsrspaces_erp_logs:
+  jsrspaces_erp_redis_cache:
+  jsrspaces_erp_redis_queue:
+  jsrspaces_erp_redis_socketio:
+  
+  # Booked Scheduler volumes
+  jsrspaces_booked_db:
+  jsrspaces_booked_data:
+  
+  # Cobot volumes (if self-hosted version becomes available)
+  # jsrspaces_cobot_db:
+

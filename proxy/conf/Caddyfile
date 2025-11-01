@@ -1,0 +1,57 @@
+{
+    email admin@jsrspaces.com
+}
+
+# Main website - www.jsrspaces.com (primary domain)
+www.jsrspaces.com {
+    encode gzip
+    
+    # Serve static files from nginx container
+    reverse_proxy website:80 {
+        header_up Host {host}
+        header_up X-Real-IP {remote}
+        header_up X-Forwarded-For {remote}
+        header_up X-Forwarded-Host {host}
+        header_up X-Forwarded-Proto https
+    }
+}
+
+# Non-www redirect to www
+jsrspaces.com {
+    redir https://www.jsrspaces.com{uri} 308
+}
+
+# ERPNext - Enterprise Resource Planning
+erp.jsrspaces.com {
+    encode gzip
+    reverse_proxy erp_frontend:8080 {
+        header_up Host {host}
+        header_up X-Real-IP {remote}
+        header_up X-Forwarded-For {remote}
+        header_up X-Forwarded-Host {host}
+        header_up X-Forwarded-Proto https
+        header_up X-Forwarded-Port 443
+    }
+}
+
+# Booked Scheduler - Resource Booking System
+booked.jsrspaces.com {
+    encode gzip
+    reverse_proxy booked:80 {
+        header_up Host {host}
+        header_up X-Real-IP {remote}
+        header_up X-Forwarded-For {remote}
+        header_up X-Forwarded-Host {host}
+        header_up X-Forwarded-Proto https
+    }
+}
+
+# Optional: admin panel or API subdomain
+# admin.jsrspaces.com {
+#     encode gzip
+#     reverse_proxy admin:3000 {
+#         header_up Host {host}
+#         header_up X-Forwarded-Proto https
+#     }
+# }
+
