@@ -12,6 +12,7 @@ YELLOW='\033[1;33m'
 NC='\033[0m' # No Color
 
 COMPOSE_FILE="docker-compose.yml"
+DOCKER_COMPOSE_CMD=""  # Will be set by check_docker
 
 # Print functions
 print_header() {
@@ -39,8 +40,15 @@ check_docker() {
         exit 1
     fi
     
-    if ! command -v docker compose &> /dev/null && ! command -v docker-compose &> /dev/null; then
-        print_error "Docker Compose is not installed. Please install Docker Compose first."
+    # Detect docker compose command
+    if docker compose version &> /dev/null 2>&1; then
+        DOCKER_COMPOSE_CMD="docker compose"
+    elif command -v docker-compose &> /dev/null; then
+        DOCKER_COMPOSE_CMD="docker-compose"
+    else
+        print_error "Docker Compose is not installed."
+        print_error "Install with: sudo yum install docker-compose-plugin -y"
+        print_error "Or: sudo apt install docker-compose -y"
         exit 1
     fi
 }
@@ -49,16 +57,16 @@ check_docker() {
 start() {
     print_header "Starting JSRSpaces Infrastructure"
     check_docker
-    docker compose -f $COMPOSE_FILE up -d
+    $DOCKER_COMPOSE_CMD -f $COMPOSE_FILE up -d
     print_status "Services started"
-    docker compose -f $COMPOSE_FILE ps
+    $DOCKER_COMPOSE_CMD -f $COMPOSE_FILE ps
 }
 
 # Stop services
 stop() {
     print_header "Stopping JSRSpaces Infrastructure"
     check_docker
-    docker compose -f $COMPOSE_FILE stop
+    $DOCKER_COMPOSE_CMD -f $COMPOSE_FILE stop
     print_status "Services stopped"
 }
 
@@ -66,7 +74,7 @@ stop() {
 restart() {
     print_header "Restarting JSRSpaces Infrastructure"
     check_docker
-    docker compose -f $COMPOSE_FILE restart
+    $DOCKER_COMPOSE_CMD -f $COMPOSE_FILE restart
     print_status "Services restarted"
 }
 
@@ -74,16 +82,16 @@ restart() {
 status() {
     print_header "JSRSpaces Infrastructure Status"
     check_docker
-    docker compose -f $COMPOSE_FILE ps
+    $DOCKER_COMPOSE_CMD -f $COMPOSE_FILE ps
 }
 
 # Show logs
 logs() {
     SERVICE=${1:-""}
     if [ -z "$SERVICE" ]; then
-        docker compose -f $COMPOSE_FILE logs -f
+        $DOCKER_COMPOSE_CMD -f $COMPOSE_FILE logs -f
     else
-        docker compose -f $COMPOSE_FILE logs -f $SERVICE
+        $DOCKER_COMPOSE_CMD -f $COMPOSE_FILE logs -f $SERVICE
     fi
 }
 
@@ -91,8 +99,8 @@ logs() {
 update() {
     print_header "Updating JSRSpaces Infrastructure"
     check_docker
-    docker compose -f $COMPOSE_FILE pull
-    docker compose -f $COMPOSE_FILE up -d
+    $DOCKER_COMPOSE_CMD -f $COMPOSE_FILE pull
+    $DOCKER_COMPOSE_CMD -f $COMPOSE_FILE up -d
     print_status "Services updated"
 }
 
@@ -104,7 +112,7 @@ clean() {
     read -p "Are you sure? (y/N) " -n 1 -r
     echo
     if [[ $REPLY =~ ^[Yy]$ ]]; then
-        docker compose -f $COMPOSE_FILE down -v
+        $DOCKER_COMPOSE_CMD -f $COMPOSE_FILE down -v
         print_status "Cleanup complete"
     else
         print_status "Cleanup cancelled"
@@ -151,22 +159,22 @@ erp_init() {
     print_status "Checking if ERPNext site needs initialization..."
     
     # Check if site already exists
-    if docker compose -f $COMPOSE_FILE exec -T jsrspaces_erp_backend bench --site jsrspaces.local list-apps 2>/dev/null | grep -q erpnext; then
+    if $DOCKER_COMPOSE_CMD -f $COMPOSE_FILE exec -T jsrspaces_erp_backend bench --site jsrspaces.local list-apps 2>/dev/null | grep -q erpnext; then
         print_status "ERPNext site already initialized"
-        docker compose -f $COMPOSE_FILE exec -T jsrspaces_erp_backend bench --site jsrspaces.local show-config 2>/dev/null || true
+        $DOCKER_COMPOSE_CMD -f $COMPOSE_FILE exec -T jsrspaces_erp_backend bench --site jsrspaces.local show-config 2>/dev/null || true
     else
         print_warning "ERPNext initialization takes 5-10 minutes on first run"
         print_status "Starting ERPNext services..."
-        docker compose -f $COMPOSE_FILE up -d erp_db erp_redis_cache erp_redis_queue erp_redis_socketio
+        $DOCKER_COMPOSE_CMD -f $COMPOSE_FILE up -d erp_db erp_redis_cache erp_redis_queue erp_redis_socketio
         
         print_status "Waiting for database to be ready..."
         sleep 10
         
         print_status "Running ERPNext site creation (this may take several minutes)..."
-        docker compose -f $COMPOSE_FILE up erp_configurator erp_create_site
+        $DOCKER_COMPOSE_CMD -f $COMPOSE_FILE up erp_configurator erp_create_site
         
         print_status "Starting ERPNext backend and frontend..."
-        docker compose -f $COMPOSE_FILE up -d
+        $DOCKER_COMPOSE_CMD -f $COMPOSE_FILE up -d
         
         print_status "ERPNext initialization complete!"
         print_status "Access ERPNext at: https://erp.jsrspaces.com"
@@ -189,13 +197,18 @@ deploy() {
         print_warning "Not a git repository, skipping pull"
     fi
     
+    # Check if npm is installed
+    if ! command -v npm &> /dev/null; then
+        print_error "npm is not installed."
+        print_error "Install Node.js and npm:"
+        print_error "  Amazon Linux: sudo yum install nodejs npm -y"
+        print_error "  Ubuntu/Debian: curl -fsSL https://deb.nodesource.com/setup_20.x | sudo -E bash - && sudo apt install -y nodejs"
+        exit 1
+    fi
+    
     # Install dependencies
     print_status "Installing dependencies..."
-    if [ ! -d "node_modules" ]; then
-        npm install
-    else
-        npm install
-    fi
+    npm install
     
     # Build website
     print_status "Building website..."
@@ -210,9 +223,9 @@ deploy() {
     # Restart website container
     print_status "Restarting website container..."
     check_docker
-    docker compose -f $COMPOSE_FILE restart website 2>/dev/null || {
+    $DOCKER_COMPOSE_CMD -f $COMPOSE_FILE restart website 2>/dev/null || {
         print_status "Website container not running, starting services..."
-        docker compose -f $COMPOSE_FILE up -d website
+        $DOCKER_COMPOSE_CMD -f $COMPOSE_FILE up -d website
     }
     
     # Cleanup node_modules
