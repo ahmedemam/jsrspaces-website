@@ -104,11 +104,17 @@ status() {
 
 # Show logs
 logs() {
+    check_docker
     SERVICE=${1:-""}
     if [ -z "$SERVICE" ]; then
-        $DOCKER_COMPOSE_CMD -f $COMPOSE_FILE logs --tail=100
+        docker logs jsrspaces_proxy 2>&1 | tail -100
     else
-        $DOCKER_COMPOSE_CMD -f $COMPOSE_FILE logs --tail=100 "$SERVICE"
+        # Try docker-compose first, fallback to docker logs
+        if $DOCKER_COMPOSE_CMD -f $COMPOSE_FILE logs --tail 100 "$SERVICE" 2>&1; then
+            :
+        else
+            docker logs "jsrspaces_${SERVICE}" 2>&1 | tail -100
+        fi
     fi
 }
 
