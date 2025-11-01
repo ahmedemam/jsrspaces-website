@@ -1,145 +1,139 @@
-# Cobot Integration Setup Guide
-
-This guide explains how to set up Cobot integration with your JSRSpaces infrastructure.
+# Cobot Integration Setup - Fresh Install
 
 ## Overview
 
-Cobot is primarily a **SaaS (Software as a Service)** platform and does not offer an official self-hosted version. However, we've configured your infrastructure to integrate with Cobot's hosted service using your own custom domain.
+Cobot integration is now configured from scratch. Cobot uses SaaS (hosted service) and is accessed via reverse proxy.
 
-## Setup Options
+## Configuration Status
 
-### Option 1: Custom Domain with Cobot SaaS (Recommended)
+✅ **docker-compose.cobot.yml** - Clean configuration  
+✅ **proxy/conf/Caddyfile** - Proxy route configured  
+✅ **docker-compose.yml** - Includes Cobot config
 
-This allows you to use `cobot.jsrspaces.com` while using Cobot's hosted infrastructure.
+## Quick Setup Steps
 
-#### Prerequisites
+### 1. Start Services
 
-1. **Cobot Account**: You need an active Cobot subscription
-2. **DNS Access**: Ability to create DNS records for `jsrspaces.com`
+```bash
+./manage.sh start
+```
 
-#### Setup Steps
+This will:
+- Load Cobot configuration
+- Start proxy with Cobot route
+- Reload proxy to pick up new configuration
 
-1. **Configure DNS**
-   - Add a CNAME record:
-     - **Name**: `cobot`
-     - **Value**: `domains.cobot.me`
-     - **TTL**: 3600 (or default)
+### 2. Configure DNS
 
-2. **Configure Cobot**
-   - Log into your Cobot admin panel
-   - Navigate to: **Customize » Domain**
-   - Enter your custom domain: `cobot.jsrspaces.com`
-   - Save the settings
-   - Wait for DNS propagation (may take a few minutes to hours)
+Add a CNAME record in your DNS provider:
 
-3. **Start Services**
-   ```bash
-   ./manage.sh start
-   ```
+```
+Type: CNAME
+Name: cobot
+Value: domains.cobot.me
+TTL: 3600 (or default)
+```
 
-4. **Verify**
-   - Visit `https://cobot.jsrspaces.com`
-   - You should see your Cobot interface
+This creates: `cobot.jsrspaces.com` → `domains.cobot.me`
 
-#### Current Configuration
+### 3. Configure Cobot Admin
 
-- **Domain**: `cobot.jsrspaces.com`
-- **Proxy**: Handled by main Caddy proxy (see `proxy/conf/Caddyfile`)
-- **Routing**: Proxies to `domains.cobot.me:443`
+1. Log into your Cobot account
+2. Go to: **Customize » Domain**
+3. Enter your custom domain: `cobot.jsrspaces.com`
+4. Save the settings
 
-### Option 2: Self-Hosted Cobot (Future)
+### 4. Wait for DNS Propagation
 
-If a self-hosted version becomes available in the future:
+DNS changes can take:
+- 5-15 minutes (usually)
+- Up to 48 hours (worst case)
 
-1. **Update Docker Image**
-   - Edit `docker-compose.cobot.yml`
-   - Uncomment the `cobot_db` and `cobot` services
-   - Update the image reference with the actual self-hosted image
-   - Set environment variables (database password, secret keys, etc.)
+### 5. Verify
 
-2. **Update Proxy Configuration**
-   - Edit `proxy/conf/Caddyfile`
-   - Comment out the SaaS proxy configuration
-   - Uncomment the self-hosted configuration
-   - Update the port if needed (currently configured for port 3000)
+Visit: `https://cobot.jsrspaces.com`
 
-3. **Set Environment Variables**
-   - Create a `.env` file or export:
-     ```bash
-     export COBOT_DB_PASSWORD=your_secure_password
-     export COBOT_SECRET_KEY=your_secret_key
-     ```
-
-4. **Start Services**
-   ```bash
-   ./manage.sh start
-   ```
-
-## Alternative Solutions
-
-If you prefer a fully self-hosted solution, your infrastructure already includes:
-
-### Recommended Self-Hosted Stack
-
-1. **ERPNext** (`erp.jsrspaces.com`)
-   - Member management & CRM
-   - Billing & invoicing
-   - Subscription management
-
-2. **Booked Scheduler** (if configured)
-   - Resource booking (desks, rooms, equipment)
-   - Member self-service portal
-   - Calendar integration
-
-3. **Custom Integration**
-   - Use n8n (if available) to automate workflows
-   - Connect ERPNext with booking systems
-   - Build custom member portal using your website
+You should see your Cobot interface.
 
 ## Troubleshooting
 
+### Proxy Not Picking Up Configuration
+
+If the proxy hasn't reloaded:
+
+```bash
+./manage.sh proxy-reload
+```
+
+Or restart the proxy:
+
+```bash
+docker restart jsrspaces_proxy
+```
+
+### Check Proxy Configuration
+
+Verify the Caddyfile is loaded:
+
+```bash
+docker exec jsrspaces_proxy cat /etc/caddy/Caddyfile | grep -A 10 "cobot"
+```
+
+### Check Proxy Logs
+
+```bash
+docker logs jsrspaces_proxy | grep -i cobot
+```
+
+Or view all recent logs:
+
+```bash
+docker logs jsrspaces_proxy --tail 50
+```
+
 ### DNS Issues
 
-- **Problem**: Domain not resolving
-  - **Solution**: Wait 24-48 hours for DNS propagation, verify CNAME record is correct
+Verify DNS is resolving:
+
+```bash
+dig cobot.jsrspaces.com
+# or
+nslookup cobot.jsrspaces.com
+```
+
+Should show: `domains.cobot.me`
 
 ### SSL Certificate Issues
 
-- **Problem**: SSL errors when accessing Cobot
-  - **Solution**: Ensure DNS is properly configured before accessing. Caddy will auto-generate certificates once DNS resolves.
+Caddy automatically gets SSL certificates. If there are issues:
 
-### Proxy Errors
+1. Check DNS is configured correctly
+2. Ensure port 80 and 443 are open
+3. Wait for certificate generation (30-60 seconds)
 
-- **Problem**: 502 Bad Gateway or connection errors
-  - **Solution**: 
-    1. Check if proxy service is running: `docker ps | grep proxy`
-    2. Verify DNS CNAME is pointing to `domains.cobot.me`
-    3. Check Cobot admin panel to ensure custom domain is configured
-    4. Review proxy logs: `docker logs jsrspaces_proxy`
+Check certificate logs:
 
-## Configuration Files
+```bash
+docker logs jsrspaces_proxy | grep -i certificate
+```
 
-- **Docker Compose**: `docker-compose.cobot.yml`
-- **Proxy Config**: `proxy/conf/Caddyfile`
-- **Base Volumes**: `docker-compose.base.yml`
+## Architecture
+
+```
+User → cobot.jsrspaces.com → Caddy Proxy → domains.cobot.me:443 → Cobot SaaS
+```
+
+- **No Docker container needed** for Cobot (it's SaaS)
+- **Routing handled by** `jsrspaces_proxy` (Caddy)
+- **SSL/TLS** automatically managed by Caddy
+
+## Files
+
+- `docker-compose.cobot.yml` - Docker Compose configuration
+- `proxy/conf/Caddyfile` - Proxy routing configuration
+- `COBOT-SETUP.md` - This file
 
 ## Support
 
-For Cobot-specific issues:
-- Cobot Help Center: https://helpcenter.cobot.me
-- Cobot Support: support@cobot.me
-
-For infrastructure issues:
-- Check service logs: `docker logs <container_name>`
-- Review configuration files
-- Verify network connectivity
-
-## Next Steps
-
-1. ✅ Configure DNS CNAME record
-2. ✅ Set custom domain in Cobot admin
-3. ✅ Start services: `./manage.sh start`
-4. ✅ Test access: `https://cobot.jsrspaces.com`
-5. ✅ Configure Cobot workspace settings
-6. ✅ Integrate with your website if needed
-
+- **Cobot Support**: https://helpcenter.cobot.me
+- **Cobot Custom Domains**: https://helpcenter.cobot.me/en/articles/4917968-custom-domains

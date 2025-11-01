@@ -37,11 +37,14 @@ erp.jsrspaces.com {
 }
 
 # Cobot - Coworking Space Management
-# Option 1: Proxy to Cobot SaaS (recommended)
-# Requires DNS CNAME: cobot.jsrspaces.com -> domains.cobot.me
-# Then configure custom domain in Cobot admin panel
+# Proxy to Cobot SaaS service
+# Setup required:
+# 1. DNS CNAME: cobot.jsrspaces.com -> domains.cobot.me
+# 2. Configure custom domain in Cobot admin: Customize » Domain
 cobot.jsrspaces.com {
     encode gzip
+    
+    # Proxy to Cobot's hosted service
     reverse_proxy domains.cobot.me:443 {
         header_up Host domains.cobot.me
         header_up X-Real-IP {remote}
@@ -51,19 +54,6 @@ cobot.jsrspaces.com {
         tls_server_name domains.cobot.me
     }
 }
-
-# Option 2: Self-hosted Cobot (when available)
-# Uncomment and configure when self-hosted Docker image is ready
-# cobot.jsrspaces.com {
-#     encode gzip
-#     reverse_proxy cobot:3000 {
-#         header_up Host {host}
-#         header_up X-Real-IP {remote}
-#         header_up X-Forwarded-For {remote}
-#         header_up X-Forwarded-Host {host}
-#         header_up X-Forwarded-Proto https
-#     }
-# }
 
 # Optional: admin panel or API subdomain
 # admin.jsrspaces.com {

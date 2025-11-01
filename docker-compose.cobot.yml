@@ -1,52 +1,22 @@
 # Cobot - Coworking Space Management Platform
-# Configuration Options:
-# 1. Proxy to Cobot SaaS via main proxy (see proxy/conf/Caddyfile)
-#    - Uses custom domain cobot.jsrspaces.com
-#    - Requires DNS CNAME: cobot.jsrspaces.com -> domains.cobot.me
-#    - Configure custom domain in Cobot admin: Customize » Domain
+# Self-hosted integration via reverse proxy to Cobot SaaS
 #
-# 2. Self-hosted Cobot (when available)
-#    - Uncomment services section below when Docker image becomes available
+# Cobot uses SaaS - no Docker containers needed
+# Routing is handled by proxy (see proxy/conf/Caddyfile)
+# See COBOT-SETUP.md for configuration steps
 
-services:
-  # Cobot Integration Status
-  # This service verifies Cobot proxy configuration is in place
-  # Cobot uses SaaS (no container needed), routing via proxy
-  cobot_status:
-    image: alpine:latest
-    restart: "no"
-    container_name: jsrspaces_cobot_status
-    command: 
-      - sh
-      - -c
-      - |
-        echo "=========================================="
-        echo "Cobot Integration Status"
-        echo "=========================================="
-        echo "✓ Configuration file loaded"
-        echo "✓ Proxy route configured: cobot.jsrspaces.com"
-        echo ""
-        echo "Next steps:"
-        echo "1. Add DNS CNAME: cobot.jsrspaces.com -> domains.cobot.me"
-        echo "2. Configure custom domain in Cobot admin panel"
-        echo "3. Access at: https://cobot.jsrspaces.com"
-        echo ""
-        echo "Cobot uses SaaS - no Docker container needed"
-        echo "Routing handled by jsrspaces_proxy"
-        echo "=========================================="
-    networks:
-      - jsrspaces_network
-    
-  # Self-hosted Cobot Services (uncomment when available)
-  # When self-hosted Docker image becomes available, uncomment below:
+services: {}
+
+# Self-hosted Cobot (when available)
+# When Docker image becomes available, uncomment below:
   
-  # cobot_db:
+# cobot_db:
   #   image: postgres:15-alpine
   #   restart: unless-stopped
   #   container_name: jsrspaces_cobot_db
   #   environment:
   #     - POSTGRES_USER=cobot
-  #     - POSTGRES_PASSWORD=${COBOT_DB_PASSWORD:-cobot_password_change_me}
+  #     - POSTGRES_PASSWORD=${COBOT_DB_PASSWORD:-change_me}
   #     - POSTGRES_DB=cobot
   #   volumes:
   #     - jsrspaces_cobot_db:/var/lib/postgresql/data
@@ -59,19 +29,18 @@ services:
   #     retries: 5
 
   # cobot:
-  #   image: cobot/cobot:latest  # Update with actual image when available
+  #   image: cobot/cobot:latest
   #   restart: unless-stopped
   #   container_name: jsrspaces_cobot
   #   depends_on:
   #     cobot_db:
   #       condition: service_healthy
   #   environment:
-  #     - DATABASE_URL=postgresql://cobot:${COBOT_DB_PASSWORD:-cobot_password_change_me}@cobot_db:5432/cobot
-  #     - SECRET_KEY_BASE=${COBOT_SECRET_KEY:-change_me_to_secure_random_string}
+  #     - DATABASE_URL=postgresql://cobot:${COBOT_DB_PASSWORD:-change_me}@cobot_db:5432/cobot
+  #     - SECRET_KEY_BASE=${COBOT_SECRET_KEY:-change_me}
   #     - RAILS_ENV=production
   #   volumes:
   #     - jsrspaces_cobot_data:/app/storage
   #     - jsrspaces_cobot_logs:/app/log
   #   networks:
   #     - jsrspaces_network
-
