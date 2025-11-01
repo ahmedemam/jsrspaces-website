@@ -1,4 +1,4 @@
-import { Facebook, Instagram, Linkedin, Twitter, Mail, Phone, MapPin } from "lucide-react";
+import { Facebook, Instagram, Linkedin, Mail, Phone, MapPin, Video } from "lucide-react";
 import { Separator } from "./ui/separator";
 
 export function Footer() {
@@ -23,17 +23,41 @@ export function Footer() {
               and visionaries building tomorrow's success stories.
             </p>
             <div className="flex gap-4">
-              <a href="#" className="hover:text-blue-200 transition-colors p-2 bg-white/5 rounded-lg hover:bg-white/10">
+              <a 
+                href="https://www.facebook.com/jsrspaces/" 
+                target="_blank"
+                rel="noopener noreferrer"
+                className="hover:text-blue-200 transition-colors p-2 bg-white/5 rounded-lg hover:bg-white/10"
+                aria-label="Facebook"
+              >
                 <Facebook className="h-5 w-5" />
               </a>
-              <a href="#" className="hover:text-blue-200 transition-colors p-2 bg-white/5 rounded-lg hover:bg-white/10">
+              <a 
+                href="https://www.instagram.com/jsrspaces/" 
+                target="_blank"
+                rel="noopener noreferrer"
+                className="hover:text-blue-200 transition-colors p-2 bg-white/5 rounded-lg hover:bg-white/10"
+                aria-label="Instagram"
+              >
                 <Instagram className="h-5 w-5" />
               </a>
-              <a href="#" className="hover:text-blue-200 transition-colors p-2 bg-white/5 rounded-lg hover:bg-white/10">
-                <Twitter className="h-5 w-5" />
-              </a>
-              <a href="#" className="hover:text-blue-200 transition-colors p-2 bg-white/5 rounded-lg hover:bg-white/10">
+              <a 
+                href="https://www.linkedin.com/company/jsrspaces/" 
+                target="_blank"
+                rel="noopener noreferrer"
+                className="hover:text-blue-200 transition-colors p-2 bg-white/5 rounded-lg hover:bg-white/10"
+                aria-label="LinkedIn"
+              >
                 <Linkedin className="h-5 w-5" />
+              </a>
+              <a 
+                href="https://www.tiktok.com/@jsrspaces" 
+                target="_blank"
+                rel="noopener noreferrer"
+                className="hover:text-blue-200 transition-colors p-2 bg-white/5 rounded-lg hover:bg-white/10"
+                aria-label="TikTok"
+              >
+                <Video className="h-5 w-5" />
               </a>
             </div>
           </div>
@@ -88,18 +112,25 @@ export function Footer() {
             <ul className="space-y-3 text-gray-400">
               <li className="flex items-start gap-2">
                 <MapPin className="h-5 w-5 text-orange-500 flex-shrink-0 mt-0.5" />
-                <span>123 Tahrir Square<br />Downtown Cairo, Egypt</span>
+                <a 
+                  href="https://maps.app.goo.gl/vWGqsQhxdpb2L9gV7"
+                  target="_blank"
+                  rel="noopener noreferrer"
+                  className="hover:text-orange-500 transition-colors"
+                >
+                  30B Asmaa Fahmi, Al Golf<br />Nasr City, Cairo 4451422
+                </a>
               </li>
               <li className="flex items-center gap-2">
                 <Phone className="h-5 w-5 text-orange-500" />
-                <a href="tel:+20212345678" className="hover:text-orange-500 transition-colors">
-                  +20 2 1234 5678
+                <a href="tel:+201040806692" className="hover:text-orange-500 transition-colors">
+                  010 40806692
                 </a>
               </li>
               <li className="flex items-center gap-2">
                 <Mail className="h-5 w-5 text-orange-500" />
-                <a href="mailto:hello@jsrspaces.com" className="hover:text-orange-500 transition-colors">
-                  hello@jsrspaces.com
+                <a href="mailto:hi@jsrspaces.com" className="hover:text-orange-500 transition-colors">
+                  hi@jsrspaces.com
                 </a>
               </li>
             </ul>
@@ -109,7 +140,7 @@ export function Footer() {
         <Separator className="bg-gray-800 mb-8" />
         
         <div className="flex flex-col md:flex-row justify-between items-center gap-4 text-gray-400 text-sm">
-          <p>&copy; 2025 JSR Spaces. All rights reserved.</p>
+          <p>&copy; 2024 JSR Spaces. All rights reserved.</p>
           <div className="flex gap-6">
             <a href="#" className="hover:text-blue-200 transition-colors">Privacy Policy</a>
             <a href="#" className="hover:text-blue-200 transition-colors">Terms of Service</a>

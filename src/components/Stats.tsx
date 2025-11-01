@@ -90,7 +90,7 @@ export function Stats() {
           </p>
         </motion.div>
 
-        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-8">
+        <div className="grid grid-cols-2 lg:grid-cols-4 gap-6 sm:gap-8">
           {stats.map((stat, index) => (
             <motion.div
               key={index}
@@ -100,15 +100,15 @@ export function Stats() {
               transition={{ duration: 0.6, delay: index * 0.1 }}
               className="text-center"
             >
-              <div className="inline-flex p-4 rounded-2xl bg-white/10 backdrop-blur-sm mb-4">
-                <stat.icon className="h-10 w-10 text-blue-200" />
+              <div className="inline-flex p-3 sm:p-4 rounded-2xl bg-white/10 backdrop-blur-sm mb-3 sm:mb-4">
+                <stat.icon className="h-8 w-8 sm:h-10 sm:w-10 text-blue-200" />
               </div>
-              <div className="text-5xl md:text-6xl mb-2">
+              <div className="text-3xl sm:text-4xl md:text-5xl lg:text-6xl mb-2">
                 <AnimatedCounter value={stat.value} />
                 {stat.suffix}
               </div>
-              <div className="text-xl mb-2">{stat.label}</div>
-              <div className="text-blue-200 text-sm">{stat.description}</div>
+              <div className="text-base sm:text-lg md:text-xl mb-1 sm:mb-2">{stat.label}</div>
+              <div className="text-blue-200 text-xs sm:text-sm">{stat.description}</div>
             </motion.div>
           ))}
         </div>

@@ -9,6 +9,20 @@ import { MapPin, Phone, Mail, Clock, Send } from "lucide-react";
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "./ui/select";
 
 export function Contact() {
+  const handleSubmit = (e: React.FormEvent<HTMLFormElement>) => {
+    e.preventDefault();
+    const formData = new FormData(e.currentTarget);
+    const phone = formData.get('phone') || '';
+    const firstName = formData.get('firstName') || '';
+    const message = formData.get('message') || 'Hi, I\'m interested in JSR Spaces!';
+    
+    // Create WhatsApp message
+    const whatsappMessage = `Hi! I'm ${firstName} and I'm interested in JSR Spaces. ${message}`;
+    const whatsappUrl = `https://wa.me/201040806692?text=${encodeURIComponent(whatsappMessage)}`;
+    
+    window.open(whatsappUrl, '_blank');
+  };
+
   return (
     <section id="contact" className="py-24 px-4 sm:px-6 lg:px-8 bg-gradient-to-b from-white to-gray-50">
       <div className="max-w-7xl mx-auto">
@@ -28,7 +42,7 @@ export function Contact() {
           </p>
         </motion.div>
         
-        <div className="grid lg:grid-cols-2 gap-12">
+        <div className="grid lg:grid-cols-2 gap-8 sm:gap-12">
           {/* Contact Form */}
           <motion.div
             initial={{ opacity: 0, x: -20 }}
@@ -37,28 +51,28 @@ export function Contact() {
             transition={{ duration: 0.6 }}
           >
             <Card className="border-none shadow-xl">
-              <CardContent className="p-8">
-                <h3 className="text-2xl mb-6">Send us a message</h3>
-                <form className="space-y-6">
-                  <div className="grid md:grid-cols-2 gap-4">
+              <CardContent className="p-5 sm:p-8">
+                <h3 className="text-xl sm:text-2xl mb-4 sm:mb-6">Send us a message</h3>
+                <form onSubmit={handleSubmit} className="space-y-4 sm:space-y-6">
+                  <div className="grid sm:grid-cols-2 gap-4">
                     <div className="space-y-2">
                       <Label htmlFor="firstName">First Name</Label>
-                      <Input id="firstName" placeholder="John" />
+                      <Input id="firstName" name="firstName" placeholder="John" required />
                     </div>
                     <div className="space-y-2">
                       <Label htmlFor="lastName">Last Name</Label>
-                      <Input id="lastName" placeholder="Doe" />
+                      <Input id="lastName" name="lastName" placeholder="Doe" />
                     </div>
                   </div>
                   
                   <div className="space-y-2">
                     <Label htmlFor="email">Email Address</Label>
-                    <Input id="email" type="email" placeholder="john@company.com" />
+                    <Input id="email" name="email" type="email" placeholder="john@company.com" required />
                   </div>
                   
                   <div className="space-y-2">
                     <Label htmlFor="phone">Phone Number</Label>
-                    <Input id="phone" type="tel" placeholder="+20 123 456 7890" />
+                    <Input id="phone" name="phone" type="tel" placeholder="+20 123 456 7890" />
                   </div>
                   
                   <div className="space-y-2">
@@ -81,15 +95,16 @@ export function Contact() {
                   <div className="space-y-2">
                     <Label htmlFor="message">Message</Label>
                     <Textarea 
-                      id="message" 
+                      id="message"
+                      name="message"
                       placeholder="Tell us about your workspace needs and how we can help..." 
                       rows={5} 
                     />
                   </div>
                   
-                  <Button className="w-full bg-[#00009f] hover:bg-[#000080] h-12">
+                  <Button type="submit" className="w-full bg-[#00009f] hover:bg-[#000080] h-12">
                     <Send className="mr-2 h-4 w-4" />
-                    Send Message
+                    Send via WhatsApp
                   </Button>
                 </form>
               </CardContent>
@@ -112,19 +127,11 @@ export function Contact() {
                     <MapPin className="h-6 w-6 text-[#00009f]" />
                   </div>
                   <div className="flex-1">
-                    <h3 className="text-xl mb-4">Our Locations</h3>
+                    <h3 className="text-xl mb-4">Our Location</h3>
                     <div className="space-y-4 text-gray-600">
                       <div>
-                        <div className="font-semibold text-gray-900">Downtown Cairo</div>
-                        <div className="text-sm">123 Tahrir Square, Cairo</div>
-                      </div>
-                      <div>
-                        <div className="font-semibold text-gray-900">Zamalek</div>
-                        <div className="text-sm">45 26th of July Street, Zamalek</div>
-                      </div>
-                      <div>
-                        <div className="font-semibold text-gray-900">New Cairo</div>
-                        <div className="text-sm">The District, 5th Settlement</div>
+                        <div className="font-semibold text-gray-900">JSR Spaces - Nasr City</div>
+                        <div className="text-sm">30B Asmaa Fahmi, Al Golf, Nasr City, Cairo 4451422</div>
                       </div>
                     </div>
                   </div>
@@ -140,9 +147,9 @@ export function Contact() {
                     <Phone className="h-6 w-6 text-[#00009f]" />
                   </div>
                   <div>
-                    <h3 className="text-xl mb-2">Phone</h3>
-                    <a href="tel:+20212345678" className="text-gray-600 hover:text-[#00009f] transition-colors">
-                      +20 2 1234 5678
+                    <h3 className="text-xl mb-2">Phone & WhatsApp</h3>
+                    <a href="tel:+201040806692" className="text-gray-600 hover:text-[#00009f] transition-colors">
+                      010 40806692
                     </a>
                     <div className="text-sm text-gray-500 mt-1">Sales & Inquiries</div>
                   </div>
@@ -154,8 +161,8 @@ export function Contact() {
                   </div>
                   <div>
                     <h3 className="text-xl mb-2">Email</h3>
-                    <a href="mailto:hello@jsrspaces.com" className="text-gray-600 hover:text-[#00009f] transition-colors">
-                      hello@jsrspaces.com
+                    <a href="mailto:hi@jsrspaces.com" className="text-gray-600 hover:text-[#00009f] transition-colors">
+                      hi@jsrspaces.com
                     </a>
                     <div className="text-sm text-gray-500 mt-1">We reply within 24 hours</div>
                   </div>

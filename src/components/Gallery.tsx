@@ -68,12 +68,12 @@ export function Gallery() {
           whileInView={{ opacity: 1 }}
           viewport={{ once: true }}
           transition={{ duration: 0.8 }}
-          className="grid grid-cols-2 md:grid-cols-4 gap-4 auto-rows-[200px] mb-12"
+          className="grid grid-cols-2 md:grid-cols-4 gap-2 sm:gap-4 auto-rows-[150px] sm:auto-rows-[200px] mb-12"
         >
           {images.map((image, index) => (
             <motion.div
               key={index}
-              className={`${image.span} relative group overflow-hidden rounded-xl cursor-pointer`}
+              className={`${image.span} relative group overflow-hidden rounded-lg sm:rounded-xl cursor-pointer`}
               initial={{ opacity: 0, scale: 0.9 }}
               whileInView={{ opacity: 1, scale: 1 }}
               viewport={{ once: true }}

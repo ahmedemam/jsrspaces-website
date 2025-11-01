@@ -25,46 +25,51 @@ export function CTASection() {
             transition={{ duration: 0.8 }}
             className="text-white"
           >
-            <h2 className="text-4xl md:text-5xl lg:text-6xl mb-6 leading-tight">
+            <h2 className="text-3xl sm:text-4xl md:text-5xl lg:text-6xl mb-4 sm:mb-6 leading-tight">
               Ready to Transform Your Work Life?
             </h2>
-            <p className="text-xl text-blue-100 mb-8 leading-relaxed">
+            <p className="text-lg sm:text-xl text-blue-100 mb-6 sm:mb-8 leading-relaxed">
               Join Cairo's most innovative workspace community. Experience productivity, 
               collaboration, and growth like never before.
             </p>
 
-            <div className="flex flex-col sm:flex-row gap-4 mb-8">
+            <div className="flex flex-col sm:flex-row gap-3 sm:gap-4 mb-6 sm:mb-8">
               <Button 
                 size="lg" 
-                className="bg-white text-[#00009f] hover:bg-blue-50 text-lg px-8 py-6 shadow-xl"
+                onClick={() => {
+                  const element = document.getElementById('contact');
+                  if (element) element.scrollIntoView({ behavior: 'smooth' });
+                }}
+                className="bg-white text-[#00009f] hover:bg-blue-50 text-base sm:text-lg px-6 sm:px-8 py-5 sm:py-6 shadow-xl"
               >
-                <Calendar className="mr-2 h-5 w-5" />
+                <Calendar className="mr-2 h-4 w-4 sm:h-5 sm:w-5" />
                 Book a Free Tour
               </Button>
               <Button 
                 size="lg" 
                 variant="outline"
-                className="border-2 border-white text-white hover:bg-white/10 text-lg px-8 py-6"
+                onClick={() => window.open('tel:+201040806692', '_self')}
+                className="border-2 border-white text-white hover:bg-white/10 text-base sm:text-lg px-6 sm:px-8 py-5 sm:py-6"
               >
-                <Phone className="mr-2 h-5 w-5" />
+                <Phone className="mr-2 h-4 w-4 sm:h-5 sm:w-5" />
                 Call Us Now
               </Button>
             </div>
 
-            <div className="flex items-center gap-8 text-blue-100">
+            <div className="flex items-center gap-4 sm:gap-8 text-blue-100">
               <div>
-                <div className="text-3xl mb-1">4.9/5</div>
-                <div className="text-sm">Average Rating</div>
+                <div className="text-2xl sm:text-3xl mb-1">4.9/5</div>
+                <div className="text-xs sm:text-sm">Average Rating</div>
               </div>
-              <div className="h-12 w-px bg-blue-300/30" />
+              <div className="h-10 sm:h-12 w-px bg-blue-300/30" />
               <div>
-                <div className="text-3xl mb-1">2,500+</div>
-                <div className="text-sm">Happy Members</div>
+                <div className="text-2xl sm:text-3xl mb-1">2,500+</div>
+                <div className="text-xs sm:text-sm">Happy Members</div>
               </div>
-              <div className="h-12 w-px bg-blue-300/30" />
+              <div className="h-10 sm:h-12 w-px bg-blue-300/30" />
               <div>
-                <div className="text-3xl mb-1">500+</div>
-                <div className="text-sm">Companies</div>
+                <div className="text-2xl sm:text-3xl mb-1">500+</div>
+                <div className="text-xs sm:text-sm">Companies</div>
               </div>
             </div>
           </motion.div>
@@ -80,7 +85,7 @@ export function CTASection() {
               <h3 className="text-2xl text-white mb-6">What You'll Get</h3>
               <ul className="space-y-4 text-blue-100">
                 {[
-                  "Instant access to all 3 Cairo locations",
+                  "Instant access to our premium Nasr City location",
                   "Premium amenities and services",
                   "Networking with 2,500+ professionals",
                   "50+ monthly community events",

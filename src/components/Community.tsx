@@ -55,7 +55,7 @@ const communityStats = [
 
 export function Community() {
   return (
-    <section id="community" className="py-24 px-4 sm:px-6 lg:px-8 bg-gradient-to-b from-gray-50 to-white">
+    <section id="community" className="py-16 sm:py-24 px-4 sm:px-6 lg:px-8 bg-gradient-to-b from-gray-50 to-white">
       <div className="max-w-7xl mx-auto">
         <motion.div
           initial={{ opacity: 0, y: 20 }}
@@ -130,7 +130,13 @@ export function Community() {
                 </Card>
               ))}
             </div>
-            <Button className="mt-6 w-full bg-orange-600 hover:bg-orange-700">
+            <Button 
+              onClick={() => {
+                const element = document.getElementById('contact');
+                if (element) element.scrollIntoView({ behavior: 'smooth' });
+              }}
+              className="mt-6 w-full bg-orange-600 hover:bg-orange-700 cursor-pointer"
+            >
               <Calendar className="mr-2 h-4 w-4" />
               View All Events
             </Button>

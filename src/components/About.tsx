@@ -65,7 +65,7 @@ export function About() {
             transition={{ duration: 0.6 }}
             className="relative"
           >
-            <div className="relative h-[600px] rounded-2xl overflow-hidden shadow-2xl">
+            <div className="relative h-[400px] sm:h-[500px] lg:h-[600px] rounded-2xl overflow-hidden shadow-2xl">
               <ImageWithFallback
                 src="https://images.unsplash.com/photo-1634154955201-e7c93fd2a180?crop=entropy&cs=tinysrgb&fit=max&fm=jpg&ixid=M3w3Nzg4Nzd8MHwxfHNlYXJjaHwxfHxjYWlybyUyMGNpdHklMjBza3lsaW5lfGVufDF8fHx8MTc2MjAwMTc3NHww&ixlib=rb-4.1.0&q=80&w=1080&utm_source=figma&utm_medium=referral"
                 alt="Cairo Skyline"
@@ -82,7 +82,7 @@ export function About() {
               transition={{ duration: 0.6, delay: 0.2 }}
               className="absolute -bottom-8 -left-8 bg-white rounded-xl shadow-xl p-6"
             >
-              <div className="text-3xl text-[#00009f] mb-1">2020</div>
+              <div className="text-3xl text-[#00009f] mb-1">2024</div>
               <div className="text-gray-600">Established</div>
             </motion.div>
             

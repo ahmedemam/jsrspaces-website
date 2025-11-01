@@ -7,9 +7,9 @@ import { Tabs, TabsContent, TabsList, TabsTrigger } from "./ui/tabs";
 
 const monthlyPlans = [
   {
-    name: "Day Pass",
+    name: "Daily Shared Access",
     icon: Sparkles,
-    price: "350",
+    price: "200",
     period: "day",
     description: "Try us out with flexible daily access",
     features: [
@@ -149,7 +149,7 @@ export function Pricing() {
           </TabsList>
 
           <TabsContent value="monthly">
-            <div className="grid md:grid-cols-2 lg:grid-cols-4 gap-8 mb-12">
+            <div className="grid sm:grid-cols-2 lg:grid-cols-4 gap-6 sm:gap-8 mb-12">
               {monthlyPlans.map((plan, index) => (
                 <motion.div
                   key={index}
@@ -206,6 +206,10 @@ export function Pricing() {
                       </ul>
                       
                       <Button 
+                        onClick={() => {
+                          const element = document.getElementById('contact');
+                          if (element) element.scrollIntoView({ behavior: 'smooth' });
+                        }}
                         className={`w-full ${
                           plan.popular 
                             ? 'bg-[#00009f] hover:bg-[#000080]' 
@@ -223,7 +227,7 @@ export function Pricing() {
           </TabsContent>
 
           <TabsContent value="enterprise">
-            <div className="grid md:grid-cols-2 gap-8 max-w-4xl mx-auto mb-12">
+            <div className="grid sm:grid-cols-2 gap-6 sm:gap-8 max-w-4xl mx-auto mb-12">
               {enterprisePlans.map((plan, index) => (
                 <motion.div
                   key={index}
@@ -264,7 +268,13 @@ export function Pricing() {
                         ))}
                       </ul>
                       
-                      <Button className="w-full bg-[#00009f] hover:bg-[#000080]">
+                      <Button 
+                        onClick={() => {
+                          const element = document.getElementById('contact');
+                          if (element) element.scrollIntoView({ behavior: 'smooth' });
+                        }}
+                        className="w-full bg-[#00009f] hover:bg-[#000080]"
+                      >
                         {plan.price === "Custom" ? "Contact Sales" : "Get Started"}
                       </Button>
                     </CardContent>
@@ -283,15 +293,15 @@ export function Pricing() {
           transition={{ duration: 0.6 }}
           className="mt-16"
         >
-          <h3 className="text-2xl text-center mb-8">
+          <h3 className="text-xl sm:text-2xl text-center mb-6 sm:mb-8">
             Add-On <span className="text-[#00009f]">Services</span>
           </h3>
-          <div className="grid md:grid-cols-3 lg:grid-cols-6 gap-4 max-w-5xl mx-auto">
+          <div className="grid grid-cols-2 sm:grid-cols-3 lg:grid-cols-6 gap-3 sm:gap-4 max-w-5xl mx-auto">
             {addOns.map((addon, index) => (
               <Card key={index} className="text-center hover:shadow-md transition-shadow">
-                <CardContent className="p-4">
-                  <div className="text-sm mb-1">{addon.name}</div>
-                  <div className="text-[#00009f]">EGP {addon.price}</div>
+                <CardContent className="p-3 sm:p-4">
+                  <div className="text-xs sm:text-sm mb-1">{addon.name}</div>
+                  <div className="text-[#00009f] text-sm sm:text-base">EGP {addon.price}</div>
                 </CardContent>
               </Card>
             ))}

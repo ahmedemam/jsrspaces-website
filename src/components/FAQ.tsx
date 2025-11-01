@@ -101,7 +101,13 @@ export function FAQ() {
           <p className="text-gray-600 mb-6">
             Our team is here to help you find the perfect workspace solution.
           </p>
-          <Button className="bg-[#00009f] hover:bg-[#000080]">
+          <Button 
+            onClick={() => {
+              const message = "Hi! I have questions about JSR Spaces.";
+              window.open(`https://wa.me/201040806692?text=${encodeURIComponent(message)}`, '_blank');
+            }}
+            className="bg-[#00009f] hover:bg-[#000080] cursor-pointer"
+          >
             <MessageCircle className="mr-2 h-4 w-4" />
             Chat with Us
           </Button>

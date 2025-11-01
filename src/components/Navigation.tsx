@@ -35,6 +35,7 @@ export function Navigation() {
     { label: "Amenities", id: "amenities" },
     { label: "Community", id: "community" },
     { label: "Pricing", id: "pricing" },
+    { label: "Location", id: "locations" },
     { label: "Contact", id: "contact" }
   ];
 
@@ -66,7 +67,10 @@ export function Navigation() {
                 {item.label}
               </button>
             ))}
-            <Button className="bg-[#00009f] hover:bg-[#000080]">
+            <Button 
+              onClick={() => scrollToSection("contact")}
+              className="bg-[#00009f] hover:bg-[#000080]"
+            >
               Book a Tour
             </Button>
           </div>
@@ -104,7 +108,10 @@ export function Navigation() {
                   {item.label}
                 </button>
               ))}
-              <Button className="w-full bg-[#00009f] hover:bg-[#000080]">
+              <Button 
+                onClick={() => scrollToSection("contact")}
+                className="w-full bg-[#00009f] hover:bg-[#000080]"
+              >
                 Book a Tour
               </Button>
             </div>

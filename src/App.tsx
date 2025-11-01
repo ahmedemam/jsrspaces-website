@@ -7,10 +7,17 @@ import { WorkspaceTypes } from "./components/WorkspaceTypes";
 import { Amenities } from "./components/Amenities";
 import { HowItWorks } from "./components/HowItWorks";
 import { QuickBooking } from "./components/QuickBooking";
+import { LiveAvailability } from "./components/LiveAvailability";
+import { VideoSection } from "./components/VideoSection";
 import { Community } from "./components/Community";
+import { SuccessStories } from "./components/SuccessStories";
 import { Testimonials } from "./components/Testimonials";
 import { Pricing } from "./components/Pricing";
+import { VirtualAddress } from "./components/VirtualAddress";
+import { SpecialDiscounts } from "./components/SpecialDiscounts";
+import { MemberPerks } from "./components/MemberPerks";
 import { Partners } from "./components/Partners";
+import { Awards } from "./components/Awards";
 import { Gallery } from "./components/Gallery";
 import { FAQ } from "./components/FAQ";
 import { LocationMap } from "./components/LocationMap";
@@ -18,7 +25,7 @@ import { CTASection } from "./components/CTASection";
 import { Contact } from "./components/Contact";
 import { Newsletter } from "./components/Newsletter";
 import { Footer } from "./components/Footer";
-import { Toaster } from "./components/ui/sonner";
+import { FloatingWhatsApp } from "./components/FloatingWhatsApp";
 
 export default function App() {
   return (
@@ -32,10 +39,17 @@ export default function App() {
       <Amenities />
       <HowItWorks />
       <QuickBooking />
+      <LiveAvailability />
+      <VideoSection />
       <Community />
+      <SuccessStories />
       <Testimonials />
       <Pricing />
+      <VirtualAddress />
+      <SpecialDiscounts />
+      <MemberPerks />
       <Partners />
+      <Awards />
       <Gallery />
       <FAQ />
       <LocationMap />
@@ -43,7 +57,9 @@ export default function App() {
       <Contact />
       <Newsletter />
       <Footer />
-      <Toaster />
+      
+      {/* Floating WhatsApp Button */}
+      <FloatingWhatsApp />
     </div>
   );
 }
