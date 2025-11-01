@@ -77,6 +77,12 @@ start() {
     $DOCKER_COMPOSE_CMD -f $COMPOSE_FILE up -d
     print_status "Services started"
     $DOCKER_COMPOSE_CMD -f $COMPOSE_FILE ps
+    print_warning "Cobot Setup: Ensure DNS CNAME is configured (cobot.jsrspaces.com -> domains.cobot.me)"
+    print_warning "Cobot Setup: Configure custom domain in Cobot admin panel"
+    print_status "Access services:"
+    print_status "  Website: https://www.jsrspaces.com"
+    print_status "  ERPNext: https://erp.jsrspaces.com"
+    print_status "  Cobot: https://cobot.jsrspaces.com"
 }
 
 # Stop services
@@ -170,6 +176,10 @@ Services:
     - proxy     Caddy reverse proxy (SSL/TLS)
     - website   Nginx web server
     - erp       ERPNext (backend, frontend, database, workers)
+    - cobot     Cobot coworking management (via proxy to SaaS)
+
+Note: Cobot requires DNS CNAME configuration and custom domain setup in Cobot admin.
+      See COBOT-SETUP.md for details.
 EOF
 }
 
