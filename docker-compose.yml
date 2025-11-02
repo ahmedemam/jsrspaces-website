@@ -6,5 +6,4 @@ include:
   - docker-compose.proxy.yml
   - docker-compose.website.yml
   - docker-compose.erp.yml
-  - docker-compose.cobot.yml
 

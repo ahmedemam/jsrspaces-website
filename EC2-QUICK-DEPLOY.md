@@ -63,7 +63,6 @@ After DNS propagates (5-60 minutes):
 
 - ✅ **Website**: https://www.jsrspaces.com (React/Vite build)
 - ✅ **ERPNext**: https://erp.jsrspaces.com (optional, run `./manage.sh erp-init`)
-- ✅ **Booked**: https://booked.jsrspaces.com (optional, requires setup)
 
 ## 🔄 Updating Website
 
@@ -106,7 +105,7 @@ docker ps | grep jsrspaces
 After deployment, you'll have:
 - `jsrspaces_proxy` - Caddy (SSL/reverse proxy)
 - `jsrspaces_website` - Nginx (serves website from ./build)
-- Database containers (if using ERPNext/Booked)
+- Database containers (if using ERPNext)
 
 Check status: `./manage.sh status`
 
