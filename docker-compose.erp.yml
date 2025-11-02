@@ -109,6 +109,10 @@ services:
           fi
         done;
         echo "sites/common_site_config.json found";
+        if [ -d "sites/jsrspaces.local" ]; then
+          echo "Site jsrspaces.local already exists, skipping creation";
+          exit 0;
+        fi;
         bench new-site jsrspaces.local --no-mariadb-socket --admin-password=admin --db-root-password=erpnext_admin --install-app erpnext --set-default;
     networks:
       - jsrspaces_network
