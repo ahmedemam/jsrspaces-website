@@ -11,6 +11,7 @@ import { useState } from "react";
 import { submitContactFormToERPNext } from "../services/erpnextApi";
 import { getVisitorData } from "../utils/visitorTracking";
 import { toast } from "sonner";
+import { trackConversion } from "../utils/analytics";
 
 export function Contact() {
   const [interest, setInterest] = useState<string>("");
@@ -44,6 +45,8 @@ export function Contact() {
       }, true); // Send WhatsApp message
 
       if (result.success) {
+        // Track conversion
+        trackConversion.contactFormSubmit();
         toast.success(result.message || 'Thank you! Your message has been sent.');
         // Reset form
         e.currentTarget.reset();

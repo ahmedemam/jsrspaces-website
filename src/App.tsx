@@ -30,6 +30,8 @@ import { FloatingWhatsApp } from "./components/FloatingWhatsApp";
 import { Toaster } from "./components/ui/sonner";
 import { trackVisitor, incrementUniqueVisitorCount, sendVisitorDataToBackend } from "./utils/visitorTracking";
 import { StructuredData } from "./components/SEO";
+import { CookieConsent, hasCookieConsent } from "./components/CookieConsent";
+import { initGoogleAnalytics, trackPageView } from "./utils/analytics";
 
 export default function App() {
   // Track visitor on app load
@@ -48,6 +50,14 @@ export default function App() {
     // Log visitor data (can be removed in production)
     if (import.meta.env.DEV) {
       console.log('Visitor tracked:', visitorData);
+    }
+  }, []);
+
+  // Initialize Google Analytics if consent given
+  useEffect(() => {
+    if (hasCookieConsent()) {
+      initGoogleAnalytics();
+      trackPageView(window.location.pathname, document.title);
     }
   }, []);
 
@@ -89,6 +99,9 @@ export default function App() {
       
       {/* Structured Data for SEO */}
       <StructuredData />
+      
+      {/* Cookie Consent Banner */}
+      <CookieConsent />
     </div>
   );
 }
