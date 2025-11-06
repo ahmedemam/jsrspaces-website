@@ -1,3 +1,4 @@
+import { useEffect } from "react";
 import { Navigation } from "./components/Navigation";
 import { Hero } from "./components/Hero";
 import { Stats } from "./components/Stats";
@@ -26,8 +27,30 @@ import { Contact } from "./components/Contact";
 import { Newsletter } from "./components/Newsletter";
 import { Footer } from "./components/Footer";
 import { FloatingWhatsApp } from "./components/FloatingWhatsApp";
+import { Toaster } from "./components/ui/sonner";
+import { trackVisitor, incrementUniqueVisitorCount, sendVisitorDataToBackend } from "./utils/visitorTracking";
+import { StructuredData } from "./components/SEO";
 
 export default function App() {
+  // Track visitor on app load
+  useEffect(() => {
+    const visitorData = trackVisitor();
+    
+    // Increment unique visitor count if this is a new visitor
+    if (visitorData.isNewVisitor) {
+      incrementUniqueVisitorCount();
+    }
+    
+    // Optionally send visitor data to backend/ERPNext
+    // This is commented out by default - uncomment if you want to sync with ERPNext
+    // sendVisitorDataToBackend(visitorData).catch(console.error);
+    
+    // Log visitor data (can be removed in production)
+    if (import.meta.env.DEV) {
+      console.log('Visitor tracked:', visitorData);
+    }
+  }, []);
+
   return (
     <div className="min-h-screen">
       <Navigation />
@@ -60,6 +83,12 @@ export default function App() {
       
       {/* Floating WhatsApp Button */}
       <FloatingWhatsApp />
+      
+      {/* Toast Notifications */}
+      <Toaster />
+      
+      {/* Structured Data for SEO */}
+      <StructuredData />
     </div>
   );
 }

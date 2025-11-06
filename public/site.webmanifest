@@ -1,0 +1,26 @@
+{
+  "name": "JSR Spaces - Premium Coworking Space",
+  "short_name": "JSR Spaces",
+  "description": "Cairo's premier coworking space in Nasr City offering hot desks, private offices, and event spaces.",
+  "icons": [
+    {
+      "src": "/favicon-192x192.png",
+      "sizes": "192x192",
+      "type": "image/png",
+      "purpose": "any maskable"
+    },
+    {
+      "src": "/favicon-512x512.png",
+      "sizes": "512x512",
+      "type": "image/png",
+      "purpose": "any maskable"
+    }
+  ],
+  "theme_color": "#00009f",
+  "background_color": "#ffffff",
+  "display": "standalone",
+  "start_url": "/",
+  "scope": "/",
+  "orientation": "portrait-primary"
+}
+

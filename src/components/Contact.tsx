@@ -5,22 +5,63 @@ import { Label } from "./ui/label";
 import { Card, CardContent } from "./ui/card";
 import { Badge } from "./ui/badge";
 import { motion } from "motion/react";
-import { MapPin, Phone, Mail, Clock, Send } from "lucide-react";
+import { MapPin, Phone, Mail, Clock, Send, Loader2 } from "lucide-react";
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "./ui/select";
+import { useState } from "react";
+import { submitContactFormToERPNext } from "../services/erpnextApi";
+import { getVisitorData } from "../utils/visitorTracking";
+import { toast } from "sonner";
 
 export function Contact() {
-  const handleSubmit = (e: React.FormEvent<HTMLFormElement>) => {
+  const [interest, setInterest] = useState<string>("");
+  const [isSubmitting, setIsSubmitting] = useState(false);
+
+  const handleSubmit = async (e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault();
+    setIsSubmitting(true);
+
     const formData = new FormData(e.currentTarget);
-    const phone = formData.get('phone') || '';
-    const firstName = formData.get('firstName') || '';
-    const message = formData.get('message') || 'Hi, I\'m interested in JSR Spaces!';
-    
-    // Create WhatsApp message
-    const whatsappMessage = `Hi! I'm ${firstName} and I'm interested in JSR Spaces. ${message}`;
-    const whatsappUrl = `https://wa.me/201040806692?text=${encodeURIComponent(whatsappMessage)}`;
-    
-    window.open(whatsappUrl, '_blank');
+    const firstName = formData.get('firstName')?.toString() || '';
+    const lastName = formData.get('lastName')?.toString() || '';
+    const email = formData.get('email')?.toString() || '';
+    const phone = formData.get('phone')?.toString() || '';
+    const message = formData.get('message')?.toString() || 'Hi, I\'m interested in JSR Spaces!';
+
+    // Get visitor data if available
+    const visitorData = getVisitorData();
+    const visitorId = visitorData?.visitorId;
+
+    try {
+      // Submit to ERPNext API
+      const result = await submitContactFormToERPNext({
+        firstName,
+        lastName,
+        email,
+        phone,
+        interest: interest || undefined,
+        message,
+        visitorId,
+      }, true); // Send WhatsApp message
+
+      if (result.success) {
+        toast.success(result.message || 'Thank you! Your message has been sent.');
+        // Reset form
+        e.currentTarget.reset();
+        setInterest("");
+      } else {
+        toast.error(result.message || 'Failed to send message. Please try again.');
+      }
+    } catch (error) {
+      console.error('Error submitting contact form:', error);
+      toast.error('An error occurred. Please try again or contact us directly via WhatsApp.');
+      
+      // Fallback: Open WhatsApp directly if ERPNext fails
+      const whatsappMessage = `Hi! I'm ${firstName}${lastName ? ' ' + lastName : ''} and I'm interested in JSR Spaces. ${message}`;
+      const whatsappUrl = `https://wa.me/201040806692?text=${encodeURIComponent(whatsappMessage)}`;
+      window.open(whatsappUrl, '_blank');
+    } finally {
+      setIsSubmitting(false);
+    }
   };
 
   return (
@@ -77,7 +118,7 @@ export function Contact() {
                   
                   <div className="space-y-2">
                     <Label htmlFor="interest">I'm interested in</Label>
-                    <Select>
+                    <Select value={interest} onValueChange={setInterest}>
                       <SelectTrigger>
                         <SelectValue placeholder="Select an option" />
                       </SelectTrigger>
@@ -102,9 +143,22 @@ export function Contact() {
                     />
                   </div>
                   
-                  <Button type="submit" className="w-full bg-[#00009f] hover:bg-[#000080] h-12">
-                    <Send className="mr-2 h-4 w-4" />
-                    Send via WhatsApp
+                  <Button 
+                    type="submit" 
+                    className="w-full bg-[#00009f] hover:bg-[#000080] h-12"
+                    disabled={isSubmitting}
+                  >
+                    {isSubmitting ? (
+                      <>
+                        <Loader2 className="mr-2 h-4 w-4 animate-spin" />
+                        Sending...
+                      </>
+                    ) : (
+                      <>
+                        <Send className="mr-2 h-4 w-4" />
+                        Send via WhatsApp
+                      </>
+                    )}
                   </Button>
                 </form>
               </CardContent>
