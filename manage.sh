@@ -265,6 +265,18 @@ deploy() {
         exit 1
     fi
     
+    # Fix build directory permissions
+    if [ -d "build" ]; then
+        print_status "Fixing build directory permissions..."
+        CURRENT_USER=$(whoami)
+        sudo chown -R $CURRENT_USER:$CURRENT_USER build 2>/dev/null || true
+        sudo rm -rf build 2>/dev/null || rm -rf build 2>/dev/null || true
+    fi
+    
+    # Create build directory with proper permissions
+    mkdir -p build
+    chmod 755 build
+    
     # Install dependencies
     print_status "Installing dependencies..."
     npm install

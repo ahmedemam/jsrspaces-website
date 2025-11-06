@@ -8,9 +8,29 @@ set -e
 # Colors
 GREEN='\033[0;32m'
 YELLOW='\033[1;33m'
+RED='\033[0;31m'
 NC='\033[0m'
 
 echo -e "${GREEN}Building JSRSpaces website...${NC}"
+
+# Get current user
+CURRENT_USER=$(whoami)
+CURRENT_DIR=$(pwd)
+
+# Fix permissions for build directory
+if [ -d "build" ]; then
+    echo -e "${YELLOW}Fixing permissions for build directory...${NC}"
+    # Remove build directory with proper permissions
+    sudo rm -rf build 2>/dev/null || rm -rf build 2>/dev/null || {
+        echo -e "${YELLOW}Attempting to change ownership of build directory...${NC}"
+        sudo chown -R $CURRENT_USER:$CURRENT_USER build 2>/dev/null || true
+        rm -rf build
+    }
+fi
+
+# Create build directory with proper permissions
+mkdir -p build
+chmod 755 build
 
 # Check if node_modules exists
 if [ ! -d "node_modules" ]; then
