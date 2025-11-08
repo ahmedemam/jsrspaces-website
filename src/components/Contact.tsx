@@ -97,7 +97,7 @@ export function Contact() {
             <Card className="border-none shadow-xl">
               <CardContent className="p-5 sm:p-8">
                 <h3 className="text-xl sm:text-2xl mb-4 sm:mb-6">Send us a message</h3>
-                <form onSubmit={handleSubmit} className="space-y-4 sm:space-y-6">
+                <form id="contact-form" onSubmit={handleSubmit} className="space-y-4 sm:space-y-6">
                   <div className="grid sm:grid-cols-2 gap-4">
                     <div className="space-y-2">
                       <Label htmlFor="firstName">First Name</Label>

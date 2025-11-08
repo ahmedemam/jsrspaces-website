@@ -1,9 +1,25 @@
-import { ImageWithFallback } from "./figma/ImageWithFallback";
 import { Button } from "./ui/button";
 import { ArrowRight, Award, Users, MapPin } from "lucide-react";
 import { motion } from "motion/react";
+import { useEffect, useState } from "react";
+
+const heroImages = [
+  "/images/hero-main.jpg",
+  "/images/herou-main-2.jpg",
+  "/images/hero-main-3.png",
+];
 
 export function Hero() {
+  const [currentIndex, setCurrentIndex] = useState(0);
+
+  useEffect(() => {
+    const interval = setInterval(() => {
+      setCurrentIndex((prevIndex) => (prevIndex + 1) % heroImages.length);
+    }, 4000); // Change image every 4 seconds
+
+    return () => clearInterval(interval);
+  }, []);
+
   const scrollToSection = (id: string) => {
     const element = document.getElementById(id);
     if (element) {
@@ -12,15 +28,34 @@ export function Hero() {
   };
 
   return (
-    <div className="relative min-h-screen min-h-[600px] sm:min-h-[700px]">
-      <ImageWithFallback
-        src="https://images.unsplash.com/photo-1626187777040-ffb7cb2c5450?crop=entropy&cs=tinysrgb&fit=max&fm=jpg&ixid=M3w3Nzg4Nzd8MHwxfHNlYXJjaHwxfHxtb2Rlcm4lMjBjb3dvcmtpbmclMjBzcGFjZXxlbnwxfHx8fDE3NjE5MDQyMjR8MA&ixlib=rb-4.1.0&q=80&w=1080&utm_source=figma&utm_medium=referral"
-        alt="JSR Spaces Coworking"
-        className="absolute inset-0 w-full h-full object-cover"
-      />
-      <div className="absolute inset-0 bg-gradient-to-br from-black/70 via-black/50 to-[#00009f]/40" />
+    <div className="relative min-h-[600px] sm:min-h-[700px] overflow-hidden">
+      {/* Background Images with Fade Effect */}
+      <div className="absolute inset-0 w-full h-full z-0">
+        {heroImages.map((image, index) => (
+          <motion.div
+            key={index}
+            initial={{ opacity: 0 }}
+            animate={{ 
+              opacity: index === currentIndex ? 1 : 0,
+            }}
+            transition={{ duration: 1.5, ease: "easeInOut" }}
+            className="absolute inset-0 w-full h-full"
+            style={{ 
+              zIndex: index === currentIndex ? 1 : 0,
+              pointerEvents: index === currentIndex ? 'auto' : 'none'
+            }}
+          >
+            <img
+              src={image}
+              alt={`JSR Spaces Coworking - Image ${index + 1}`}
+              className="w-full h-full min-h-[600px] sm:min-h-[700px] object-cover"
+            />
+            <div className="absolute inset-0 bg-gradient-to-br from-black/70 via-black/50 to-[#00009f]/40" />
+          </motion.div>
+        ))}
+      </div>
       
-      <div className="relative h-full max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 flex items-center py-32 sm:py-20">
+      <div className="relative z-10 h-full max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 flex items-center py-32 sm:py-20">
         <div className="text-white max-w-3xl w-full">
           <motion.div
             initial={{ opacity: 0, y: 30 }}
@@ -115,7 +150,7 @@ export function Hero() {
         initial={{ opacity: 0 }}
         animate={{ opacity: 1 }}
         transition={{ duration: 1, delay: 1.2 }}
-        className="absolute bottom-4 sm:bottom-8 left-1/2 transform -translate-x-1/2 hidden sm:flex"
+        className="absolute z-10 bottom-4 sm:bottom-8 left-1/2 transform -translate-x-1/2 hidden sm:flex"
       >
         <div className="flex flex-col items-center gap-2 text-white/70 cursor-pointer hover:text-white transition-colors"
           onClick={() => scrollToSection('about')}

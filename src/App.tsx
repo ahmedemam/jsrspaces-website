@@ -61,6 +61,50 @@ export default function App() {
     }
   }, []);
 
+  // Handle anchor links on page load and hash changes
+  useEffect(() => {
+    const scrollToAnchor = (hash: string) => {
+      if (!hash) return;
+      
+      // Remove the # symbol
+      const id = hash.substring(1);
+      
+      // Small delay to ensure DOM is ready
+      setTimeout(() => {
+        const element = document.getElementById(id);
+        if (element) {
+          // Scroll to the element with offset for fixed header
+          const headerOffset = 80;
+          const elementPosition = element.getBoundingClientRect().top;
+          const offsetPosition = elementPosition + window.pageYOffset - headerOffset;
+
+          window.scrollTo({
+            top: offsetPosition,
+            behavior: 'smooth'
+          });
+        }
+      }, 100);
+    };
+
+    // Handle initial hash on page load
+    if (window.location.hash) {
+      scrollToAnchor(window.location.hash);
+    }
+
+    // Handle hash changes (when user clicks anchor links)
+    const handleHashChange = () => {
+      if (window.location.hash) {
+        scrollToAnchor(window.location.hash);
+      }
+    };
+
+    window.addEventListener('hashchange', handleHashChange);
+
+    return () => {
+      window.removeEventListener('hashchange', handleHashChange);
+    };
+  }, []);
+
   return (
     <div className="min-h-screen">
       <Navigation />
