@@ -192,15 +192,14 @@ export function trackError(error: Error, errorInfo?: string): void {
 /**
  * Set user properties (after login/identification)
  */
-export function   setUserProperties(userId: string, properties?: Record<string, any>): void {
-    if (!window.gtag || !GA_MEASUREMENT_ID) return;
+export function setUserProperties(userId: string, properties?: Record<string, any>): void {
+  if (!window.gtag || !GA_MEASUREMENT_ID) return;
 
-    window.gtag('set', 'user_properties', {
-      user_id: userId,
-      ...properties,
-    });
-  },
-};
+  window.gtag('set', 'user_properties', {
+    user_id: userId,
+    ...properties,
+  });
+}
 
 /**
  * Initialize all analytics (GA4 + Umami)
