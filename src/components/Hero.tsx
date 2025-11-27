@@ -47,8 +47,14 @@ export function Hero() {
           >
             <img
               src={image}
-              alt={`JSR Spaces Coworking - Image ${index + 1}`}
+              alt={index === 0 
+                ? "Modern premium coworking space in Nasr City Cairo with contemporary design and natural lighting" 
+                : index === 1
+                ? "Professional workspace environment at JSR Spaces coworking space in Cairo Egypt"
+                : "Innovative coworking space interior at JSR Spaces Nasr City with modern amenities and collaborative areas"}
               className="w-full h-full min-h-[600px] sm:min-h-[700px] object-cover"
+              loading={index === 0 ? "eager" : "lazy"}
+              fetchPriority={index === 0 ? "high" : "low"}
             />
             <div className="absolute inset-0 bg-gradient-to-br from-black/70 via-black/50 to-[#00009f]/40" />
           </motion.div>

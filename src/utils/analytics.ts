@@ -1,5 +1,6 @@
 /**
- * Google Analytics 4 Integration
+ * Analytics Integration
+ * Supports both Google Analytics 4 and Umami Analytics
  * Tracks page views, events, and conversions
  */
 
@@ -84,11 +85,11 @@ export function trackEvent(
 }
 
 /**
- * Track conversion events
+ * Track conversion events (tracks in both GA4 and Umami)
  */
 export const trackConversion = {
   contactFormSubmit: () => {
-    trackEvent('contact_form_submit', {
+    trackEventAll('contact_form_submit', {
       category: 'conversion',
       action: 'submit',
       label: 'Contact Form',
@@ -96,7 +97,7 @@ export const trackConversion = {
   },
 
   whatsappClick: () => {
-    trackEvent('whatsapp_click', {
+    trackEventAll('whatsapp_click', {
       category: 'conversion',
       action: 'click',
       label: 'WhatsApp Button',
@@ -104,7 +105,7 @@ export const trackConversion = {
   },
 
   newsletterSignup: () => {
-    trackEvent('newsletter_signup', {
+    trackEventAll('newsletter_signup', {
       category: 'conversion',
       action: 'signup',
       label: 'Newsletter',
@@ -112,7 +113,7 @@ export const trackConversion = {
   },
 
   tourBooking: () => {
-    trackEvent('tour_booking', {
+    trackEventAll('tour_booking', {
       category: 'conversion',
       action: 'book',
       label: 'Tour Booking',
@@ -120,7 +121,7 @@ export const trackConversion = {
   },
 
   pricingView: (planName: string) => {
-    trackEvent('pricing_view', {
+    trackEventAll('pricing_view', {
       category: 'engagement',
       action: 'view',
       label: planName,
@@ -128,7 +129,7 @@ export const trackConversion = {
   },
 
   scrollDepth: (depth: number) => {
-    trackEvent('scroll_depth', {
+    trackEventAll('scroll_depth', {
       category: 'engagement',
       action: 'scroll',
       label: `${depth}%`,
@@ -191,12 +192,74 @@ export function trackError(error: Error, errorInfo?: string): void {
 /**
  * Set user properties (after login/identification)
  */
-export function setUserProperties(userId: string, properties?: Record<string, any>): void {
-  if (!window.gtag || !GA_MEASUREMENT_ID) return;
+export function   setUserProperties(userId: string, properties?: Record<string, any>): void {
+    if (!window.gtag || !GA_MEASUREMENT_ID) return;
 
-  window.gtag('set', 'user_properties', {
-    user_id: userId,
-    ...properties,
-  });
+    window.gtag('set', 'user_properties', {
+      user_id: userId,
+      ...properties,
+    });
+  },
+};
+
+/**
+ * Initialize all analytics (GA4 + Umami)
+ */
+export function initAllAnalytics(): void {
+  // Initialize Google Analytics if configured
+  if (GA_MEASUREMENT_ID) {
+    initGoogleAnalytics();
+  }
+
+  // Initialize Umami if configured
+  if (import.meta.env.VITE_UMAMI_WEBSITE_ID) {
+    import('./umami').then(({ initUmami }) => {
+      initUmami();
+    });
+  }
+}
+
+/**
+ * Track page view in all analytics
+ */
+export function trackPageViewAll(path: string, title?: string): void {
+  // Track in Google Analytics
+  trackPageView(path, title);
+
+  // Track in Umami
+  if (import.meta.env.VITE_UMAMI_WEBSITE_ID) {
+    import('./umami').then(({ trackUmamiPageView }) => {
+      trackUmamiPageView(path, title);
+    });
+  }
+}
+
+/**
+ * Track event in all analytics
+ */
+export function trackEventAll(
+  eventName: string,
+  eventParams?: {
+    category?: string;
+    action?: string;
+    label?: string;
+    value?: number;
+    [key: string]: any;
+  }
+): void {
+  // Track in Google Analytics
+  trackEvent(eventName, eventParams);
+
+  // Track in Umami
+  if (import.meta.env.VITE_UMAMI_WEBSITE_ID) {
+    import('./umami').then(({ trackUmamiEvent }) => {
+      trackUmamiEvent(eventName, {
+        category: eventParams?.category,
+        action: eventParams?.action,
+        label: eventParams?.label,
+        value: eventParams?.value,
+      });
+    });
+  }
 }
 

@@ -1,4 +1,5 @@
 import { useState, useEffect } from "react";
+import { Link, useLocation } from "react-router-dom";
 import { Button } from "./ui/button";
 import { Menu, X } from "lucide-react";
 import { motion, AnimatePresence, useScroll, useSpring } from "motion/react";
@@ -6,6 +7,7 @@ import { motion, AnimatePresence, useScroll, useSpring } from "motion/react";
 export function Navigation() {
   const [isScrolled, setIsScrolled] = useState(false);
   const [isMobileMenuOpen, setIsMobileMenuOpen] = useState(false);
+  const location = useLocation();
   const { scrollYProgress } = useScroll();
   const scaleX = useSpring(scrollYProgress, {
     stiffness: 100,
@@ -22,11 +24,22 @@ export function Navigation() {
   }, []);
 
   const scrollToSection = (id: string) => {
+    // If we're not on the home page, navigate to home first
+    if (location.pathname !== '/') {
+      window.location.href = `/#${id}`;
+      return;
+    }
+    
     const element = document.getElementById(id);
     if (element) {
       element.scrollIntoView({ behavior: "smooth" });
       setIsMobileMenuOpen(false);
     }
+  };
+
+  const handleContactClick = () => {
+    // Always navigate to contact page
+    setIsMobileMenuOpen(false);
   };
 
   const navItems = [
@@ -49,30 +62,47 @@ export function Navigation() {
     >
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
         <div className="flex items-center justify-between h-20">
-          <div className="text-2xl cursor-pointer" onClick={() => window.scrollTo({ top: 0, behavior: "smooth" })}>
+          <Link to="/" className="text-2xl cursor-pointer">
             <span className={isScrolled ? "text-[#00009f]" : "text-white"}>JSR</span>
             <span className={isScrolled ? "text-gray-900" : "text-white"}> Spaces</span>
-          </div>
+          </Link>
 
           {/* Desktop Menu */}
           <div className="hidden md:flex items-center space-x-8">
-            {navItems.map((item) => (
-              <button
-                key={item.id}
-                onClick={() => scrollToSection(item.id)}
-                className={`transition-colors hover:text-[#00009f] ${
-                  isScrolled ? "text-gray-700" : "text-white"
-                }`}
+            {navItems.map((item) => {
+              if (item.id === 'contact') {
+                return (
+                  <Link
+                    key={item.id}
+                    to="/contact"
+                    onClick={handleContactClick}
+                    className={`transition-colors hover:text-[#00009f] ${
+                      isScrolled ? "text-gray-700" : "text-white"
+                    }`}
+                  >
+                    {item.label}
+                  </Link>
+                );
+              }
+              return (
+                <button
+                  key={item.id}
+                  onClick={() => scrollToSection(item.id)}
+                  className={`transition-colors hover:text-[#00009f] ${
+                    isScrolled ? "text-gray-700" : "text-white"
+                  }`}
+                >
+                  {item.label}
+                </button>
+              );
+            })}
+            <Link to="/contact">
+              <Button 
+                className="bg-[#00009f] hover:bg-[#000080]"
               >
-                {item.label}
-              </button>
-            ))}
-            <Button 
-              onClick={() => scrollToSection("contact")}
-              className="bg-[#00009f] hover:bg-[#000080]"
-            >
-              Book a Tour
-            </Button>
+                Book a Tour
+              </Button>
+            </Link>
           </div>
 
           {/* Mobile Menu Button */}
@@ -99,21 +129,36 @@ export function Navigation() {
             className="md:hidden bg-white border-t"
           >
             <div className="px-4 py-4 space-y-3">
-              {navItems.map((item) => (
-                <button
-                  key={item.id}
-                  onClick={() => scrollToSection(item.id)}
-                  className="block w-full text-left py-2 text-gray-700 hover:text-[#00009f]"
+              {navItems.map((item) => {
+                if (item.id === 'contact') {
+                  return (
+                    <Link
+                      key={item.id}
+                      to="/contact"
+                      onClick={handleContactClick}
+                      className="block w-full text-left py-2 text-gray-700 hover:text-[#00009f]"
+                    >
+                      {item.label}
+                    </Link>
+                  );
+                }
+                return (
+                  <button
+                    key={item.id}
+                    onClick={() => scrollToSection(item.id)}
+                    className="block w-full text-left py-2 text-gray-700 hover:text-[#00009f]"
+                  >
+                    {item.label}
+                  </button>
+                );
+              })}
+              <Link to="/contact" onClick={() => setIsMobileMenuOpen(false)}>
+                <Button 
+                  className="w-full bg-[#00009f] hover:bg-[#000080]"
                 >
-                  {item.label}
-                </button>
-              ))}
-              <Button 
-                onClick={() => scrollToSection("contact")}
-                className="w-full bg-[#00009f] hover:bg-[#000080]"
-              >
-                Book a Tour
-              </Button>
+                  Book a Tour
+                </Button>
+              </Link>
             </div>
           </motion.div>
         )}

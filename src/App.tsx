@@ -1,39 +1,14 @@
 import { useEffect } from "react";
-import { Navigation } from "./components/Navigation";
-import { Hero } from "./components/Hero";
-import { Stats } from "./components/Stats";
-import { About } from "./components/About";
-import { WhyChooseUs } from "./components/WhyChooseUs";
-import { WorkspaceTypes } from "./components/WorkspaceTypes";
-import { Amenities } from "./components/Amenities";
-import { HowItWorks } from "./components/HowItWorks";
-import { QuickBooking } from "./components/QuickBooking";
-import { LiveAvailability } from "./components/LiveAvailability";
-import { VideoSection } from "./components/VideoSection";
-import { Community } from "./components/Community";
-import { SuccessStories } from "./components/SuccessStories";
-import { Testimonials } from "./components/Testimonials";
-import { Pricing } from "./components/Pricing";
-import { VirtualAddress } from "./components/VirtualAddress";
-import { SpecialDiscounts } from "./components/SpecialDiscounts";
-import { MemberPerks } from "./components/MemberPerks";
-import { Partners } from "./components/Partners";
-import { Awards } from "./components/Awards";
-import { Gallery } from "./components/Gallery";
-import { FAQ } from "./components/FAQ";
-import { LocationMap } from "./components/LocationMap";
-import { CTASection } from "./components/CTASection";
-import { Contact } from "./components/Contact";
-import { Newsletter } from "./components/Newsletter";
-import { Footer } from "./components/Footer";
-import { FloatingWhatsApp } from "./components/FloatingWhatsApp";
-import { Toaster } from "./components/ui/sonner";
-import { trackVisitor, incrementUniqueVisitorCount, sendVisitorDataToBackend } from "./utils/visitorTracking";
-import { StructuredData } from "./components/SEO";
-import { CookieConsent, hasCookieConsent } from "./components/CookieConsent";
-import { initGoogleAnalytics, trackPageView } from "./utils/analytics";
+import { Routes, Route, useLocation } from "react-router-dom";
+import { HomePage } from "./pages/HomePage";
+import { ContactPage } from "./pages/ContactPage";
+import { trackVisitor, incrementUniqueVisitorCount } from "./utils/visitorTracking";
+import { hasCookieConsent } from "./components/CookieConsent";
+import { initAllAnalytics, trackPageViewAll } from "./utils/analytics";
 
-export default function App() {
+function AppContent() {
+  const location = useLocation();
+
   // Track visitor on app load
   useEffect(() => {
     const visitorData = trackVisitor();
@@ -53,13 +28,22 @@ export default function App() {
     }
   }, []);
 
-  // Initialize Google Analytics if consent given
+  // Initialize all analytics (GA4 + Umami) if consent given
   useEffect(() => {
     if (hasCookieConsent()) {
-      initGoogleAnalytics();
-      trackPageView(window.location.pathname, document.title);
+      initAllAnalytics();
     }
   }, []);
+
+  // Track page views on route changes
+  useEffect(() => {
+    if (hasCookieConsent()) {
+      const pageTitle = location.pathname === '/contact' 
+        ? 'Contact Us - JSR Spaces' 
+        : 'JSR Spaces - Coworking Space in Cairo';
+      trackPageViewAll(location.pathname, pageTitle);
+    }
+  }, [location]);
 
   // Handle anchor links on page load and hash changes
   useEffect(() => {
@@ -103,49 +87,16 @@ export default function App() {
     return () => {
       window.removeEventListener('hashchange', handleHashChange);
     };
-  }, []);
+  }, [location.pathname]);
 
   return (
-    <div className="min-h-screen">
-      <Navigation />
-      <Hero />
-      <Stats />
-      <About />
-      <WhyChooseUs />
-      <WorkspaceTypes />
-      <Amenities />
-      <HowItWorks />
-      <QuickBooking />
-      <LiveAvailability />
-      <VideoSection />
-      <Community />
-      <SuccessStories />
-      <Testimonials />
-      <Pricing />
-      <VirtualAddress />
-      <SpecialDiscounts />
-      <MemberPerks />
-      <Partners />
-      <Awards />
-      <Gallery />
-      <FAQ />
-      <LocationMap />
-      <CTASection />
-      <Contact />
-      <Newsletter />
-      <Footer />
-      
-      {/* Floating WhatsApp Button */}
-      <FloatingWhatsApp />
-      
-      {/* Toast Notifications */}
-      <Toaster />
-      
-      {/* Structured Data for SEO */}
-      <StructuredData />
-      
-      {/* Cookie Consent Banner */}
-      <CookieConsent />
-    </div>
+    <Routes>
+      <Route path="/" element={<HomePage />} />
+      <Route path="/contact" element={<ContactPage />} />
+    </Routes>
   );
+}
+
+export default function App() {
+  return <AppContent />;
 }

@@ -24,12 +24,10 @@ export function CookieConsent() {
     localStorage.setItem(`${COOKIE_CONSENT_KEY}_timestamp`, new Date().toISOString());
     setShowBanner(false);
     
-    // Initialize analytics after consent
-    if (import.meta.env.VITE_GA_MEASUREMENT_ID) {
-      import('../utils/analytics').then(({ initGoogleAnalytics }) => {
-        initGoogleAnalytics();
-      });
-    }
+    // Initialize all analytics after consent
+    import('../utils/analytics').then(({ initAllAnalytics }) => {
+      initAllAnalytics();
+    });
   };
 
   const handleDecline = () => {

@@ -7,37 +7,37 @@ import { Play } from "lucide-react";
 const images = [
   {
     url: "https://images.unsplash.com/photo-1626187777040-ffb7cb2c5450?crop=entropy&cs=tinysrgb&fit=max&fm=jpg&ixid=M3w3Nzg4Nzd8MHwxfHNlYXJjaHwxfHxtb2Rlcm4lMjBjb3dvcmtpbmclMjBzcGFjZXxlbnwxfHx8fDE3NjE5MDQyMjR8MA&ixlib=rb-4.1.0&q=80&w=1080",
-    alt: "Open Workspace",
+    alt: "Modern open workspace at JSR Spaces coworking space in Nasr City Cairo with hot desks and collaborative areas",
     span: "col-span-2 row-span-2",
     label: "Open Workspace"
   },
   {
     url: "https://images.unsplash.com/photo-1571624436279-b272aff752b5?crop=entropy&cs=tinysrgb&fit=max&fm=jpg&ixid=M3w3Nzg4Nzd8MHwxfHNlYXJjaHwxfHxvZmZpY2UlMjBtZWV0aW5nJTIwcm9vbXxlbnwxfHx8fDE3NjE4OTU4ODV8MA&ixlib=rb-4.1.0&q=80&w=1080",
-    alt: "Meeting Room",
+    alt: "Professional meeting rooms available for booking at JSR Spaces coworking space Cairo Egypt",
     span: "col-span-1 row-span-1",
     label: "Meeting Rooms"
   },
   {
     url: "https://images.unsplash.com/photo-1625461291092-13d0c45608b3?crop=entropy&cs=tinysrgb&fit=max&fm=jpg&ixid=M3w3Nzg4Nzd8MHwxfHNlYXJjaHwxfHxtb2Rlcm4lMjBvZmZpY2UlMjBkZXNrfGVufDF8fHx8MTc2MTk3OTIwOHww&ixlib=rb-4.1.0&q=80&w=1080",
-    alt: "Private Office",
+    alt: "Private office spaces for rent at JSR Spaces premium coworking space in Nasr City Cairo",
     span: "col-span-1 row-span-1",
     label: "Private Offices"
   },
   {
     url: "https://images.unsplash.com/photo-1761543262131-9d464d0d7426?crop=entropy&cs=tinysrgb&fit=max&fm=jpg&ixid=M3w3Nzg4Nzd8MHwxfHNlYXJjaHwxfHxtb2Rlcm4lMjBwb2RjYXN0JTIwc3R1ZGlvfGVufDF8fHx8MTc2MjAwMzA2OXww&ixlib=rb-4.1.0&q=80&w=1080",
-    alt: "Podcast Studio",
+    alt: "Professional podcast studio and content creation lab at JSR Spaces coworking space Cairo",
     span: "col-span-1 row-span-1",
     label: "Podcast Studio"
   },
   {
     url: "https://images.unsplash.com/photo-1758194190679-198a77cba84f?crop=entropy&cs=tinysrgb&fit=max&fm=jpg&ixid=M3w3Nzg4Nzd8MHwxfHNlYXJjaHwxfHxsdXh1cnklMjBvZmZpY2UlMjBsb3VuZ2V8ZW58MXx8fHwxNzYyMDAzMDY4fDA&ixlib=rb-4.1.0&q=80&w=1080",
-    alt: "Lounge Area",
+    alt: "Comfortable lounge areas and relaxation spaces at JSR Spaces coworking space in Nasr City",
     span: "col-span-1 row-span-1",
     label: "Lounge Areas"
   },
   {
     url: "https://images.unsplash.com/photo-1749566323483-485539a09cb0?crop=entropy&cs=tinysrgb&fit=max&fm=jpg&ixid=M3w3Nzg4Nzd8MHwxfHNlYXJjaHwxfHxyb29mdG9wJTIwdGVycmFjZSUyMHdvcmtzcGFjZXxlbnwxfHx8fDE3NjIwMDMwNjl8MA&ixlib=rb-4.1.0&q=80&w=1080",
-    alt: "Rooftop Terrace",
+    alt: "Rooftop terrace with city views at JSR Spaces premium coworking space in Cairo Egypt",
     span: "col-span-2 row-span-1",
     label: "Rooftop Terrace"
   }
@@ -84,6 +84,7 @@ export function Gallery() {
                 src={image.url}
                 alt={image.alt}
                 className="w-full h-full object-cover transition-transform duration-500 group-hover:scale-110"
+                loading="lazy"
               />
               <div className="absolute inset-0 bg-gradient-to-t from-black/80 via-black/20 to-transparent opacity-60 group-hover:opacity-80 transition-opacity" />
               <div className="absolute bottom-4 left-4 right-4">
