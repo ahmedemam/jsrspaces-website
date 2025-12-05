@@ -27,7 +27,7 @@ export function CookieConsent() {
     // Initialize all analytics after consent
     import('../utils/analytics').then(({ initAllAnalytics }) => {
       initAllAnalytics();
-    });
+      });
   };
 
   const handleDecline = () => {

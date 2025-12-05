@@ -1,36 +1,51 @@
 import { Button } from "./ui/button";
 import { Input } from "./ui/input";
 import { Textarea } from "./ui/textarea";
-import { Label } from "./ui/label";
 import { Card, CardContent } from "./ui/card";
 import { Badge } from "./ui/badge";
 import { motion } from "motion/react";
-import { MapPin, Phone, Mail, Clock, Send, Loader2 } from "lucide-react";
-import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "./ui/select";
+import { MapPin, Phone, Mail, Clock, Send, Loader2, User, MessageSquare, Calendar } from "lucide-react";
 import { useState } from "react";
 import { submitContactFormToERPNext } from "../services/erpnextApi";
 import { getVisitorData } from "../utils/visitorTracking";
 import { toast } from "sonner";
-import { trackConversion } from "../utils/analytics";
+import { trackConversionAll } from "../utils/analytics";
+
+type InterestOption = 'tour' | 'hotdesk' | 'dedicated' | 'office' | 'enterprise' | 'event';
+
+const interestOptions: { value: InterestOption; label: string; description: string }[] = [
+  { value: 'tour', label: 'Book a Tour', description: 'Visit our space' },
+  { value: 'hotdesk', label: 'Hot Desk', description: 'Flexible workspace' },
+  { value: 'dedicated', label: 'Dedicated Desk', description: 'Your own space' },
+  { value: 'office', label: 'Private Office', description: 'Team workspace' },
+  { value: 'enterprise', label: 'Enterprise', description: 'Custom solutions' },
+  { value: 'event', label: 'Event Space', description: 'Host your event' }
+];
 
 export function Contact() {
-  const [interest, setInterest] = useState<string>("");
+  const [interest, setInterest] = useState<InterestOption | "">("");
+  const [firstName, setFirstName] = useState("");
+  const [lastName, setLastName] = useState("");
+  const [email, setEmail] = useState("");
+  const [phone, setPhone] = useState("");
+  const [message, setMessage] = useState("");
   const [isSubmitting, setIsSubmitting] = useState(false);
 
   const handleSubmit = async (e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault();
-    setIsSubmitting(true);
+    
+    if (!firstName || !email) {
+      toast.error('Please fill in your name and email');
+      return;
+    }
 
-    const formData = new FormData(e.currentTarget);
-    const firstName = formData.get('firstName')?.toString() || '';
-    const lastName = formData.get('lastName')?.toString() || '';
-    const email = formData.get('email')?.toString() || '';
-    const phone = formData.get('phone')?.toString() || '';
-    const message = formData.get('message')?.toString() || 'Hi, I\'m interested in JSR Spaces!';
+    setIsSubmitting(true);
 
     // Get visitor data if available
     const visitorData = getVisitorData();
     const visitorId = visitorData?.visitorId;
+
+    const finalMessage = message || `Hi, I'm interested in ${interest ? interestOptions.find(opt => opt.value === interest)?.label : 'JSR Spaces'}!`;
 
     try {
       // Submit to ERPNext API
@@ -40,16 +55,20 @@ export function Contact() {
         email,
         phone,
         interest: interest || undefined,
-        message,
+        message: finalMessage,
         visitorId,
       }, true); // Send WhatsApp message
 
       if (result.success) {
         // Track conversion
-        trackConversion.contactFormSubmit();
+        trackConversionAll.contactFormSubmit();
         toast.success(result.message || 'Thank you! Your message has been sent.');
         // Reset form
-        e.currentTarget.reset();
+        setFirstName("");
+        setLastName("");
+        setEmail("");
+        setPhone("");
+        setMessage("");
         setInterest("");
       } else {
         toast.error(result.message || 'Failed to send message. Please try again.');
@@ -59,7 +78,7 @@ export function Contact() {
       toast.error('An error occurred. Please try again or contact us directly via WhatsApp.');
       
       // Fallback: Open WhatsApp directly if ERPNext fails
-      const whatsappMessage = `Hi! I'm ${firstName}${lastName ? ' ' + lastName : ''} and I'm interested in JSR Spaces. ${message}`;
+      const whatsappMessage = `Hi! I'm ${firstName}${lastName ? ' ' + lastName : ''} and I'm interested in JSR Spaces. ${finalMessage}`;
       const whatsappUrl = `https://wa.me/201040806692?text=${encodeURIComponent(whatsappMessage)}`;
       window.open(whatsappUrl, '_blank');
     } finally {
@@ -87,68 +106,116 @@ export function Contact() {
         </motion.div>
         
         <div className="grid lg:grid-cols-2 gap-8 sm:gap-12">
-          {/* Contact Form */}
+          {/* Contact Form - Booking Style */}
           <motion.div
             initial={{ opacity: 0, x: -20 }}
             whileInView={{ opacity: 1, x: 0 }}
             viewport={{ once: true }}
             transition={{ duration: 0.6 }}
           >
-            <Card className="border-none shadow-xl">
-              <CardContent className="p-5 sm:p-8">
-                <h3 className="text-xl sm:text-2xl mb-4 sm:mb-6">Send us a message</h3>
-                <form id="contact-form" onSubmit={handleSubmit} className="space-y-4 sm:space-y-6">
-                  <div className="grid sm:grid-cols-2 gap-4">
-                    <div className="space-y-2">
-                      <Label htmlFor="firstName">First Name</Label>
-                      <Input id="firstName" name="firstName" placeholder="John" required />
+            <Card className="border-none shadow-2xl overflow-hidden">
+              <div className="bg-gradient-to-r from-[#00009f] to-[#000080] p-5 sm:p-6 text-white">
+                <h3 className="text-xl sm:text-2xl mb-2">Get in Touch</h3>
+                <p className="text-blue-100 text-sm sm:text-base">Tell us what you need and we'll help you find the perfect solution</p>
+              </div>
+
+              <CardContent className="p-4 sm:p-6 space-y-4 sm:space-y-5">
+                <form id="contact-form" onSubmit={handleSubmit} className="space-y-4 sm:space-y-5">
+                  {/* Name Fields */}
+                  <div>
+                    <label className="text-sm text-gray-600 mb-2 flex items-center gap-2">
+                      <User className="h-4 w-4" />
+                      Your Name
+                    </label>
+                    <div className="grid grid-cols-2 gap-2">
+                      <Input
+                        placeholder="First Name"
+                        value={firstName}
+                        onChange={(e) => setFirstName(e.target.value)}
+                        required
+                        className="border-2 border-gray-200 hover:border-[#00009f]/50 focus:border-[#00009f]"
+                      />
+                      <Input
+                        placeholder="Last Name"
+                        value={lastName}
+                        onChange={(e) => setLastName(e.target.value)}
+                        className="border-2 border-gray-200 hover:border-[#00009f]/50 focus:border-[#00009f]"
+                      />
                     </div>
-                    <div className="space-y-2">
-                      <Label htmlFor="lastName">Last Name</Label>
-                      <Input id="lastName" name="lastName" placeholder="Doe" />
-                    </div>
                   </div>
-                  
-                  <div className="space-y-2">
-                    <Label htmlFor="email">Email Address</Label>
-                    <Input id="email" name="email" type="email" placeholder="john@company.com" required />
-                  </div>
-                  
-                  <div className="space-y-2">
-                    <Label htmlFor="phone">Phone Number</Label>
-                    <Input id="phone" name="phone" type="tel" placeholder="+20 123 456 7890" />
-                  </div>
-                  
-                  <div className="space-y-2">
-                    <Label htmlFor="interest">I'm interested in</Label>
-                    <Select value={interest} onValueChange={setInterest}>
-                      <SelectTrigger>
-                        <SelectValue placeholder="Select an option" />
-                      </SelectTrigger>
-                      <SelectContent>
-                        <SelectItem value="tour">Booking a Tour</SelectItem>
-                        <SelectItem value="hotdesk">Hot Desk Membership</SelectItem>
-                        <SelectItem value="dedicated">Dedicated Desk</SelectItem>
-                        <SelectItem value="office">Private Office</SelectItem>
-                        <SelectItem value="enterprise">Enterprise Solution</SelectItem>
-                        <SelectItem value="event">Event Space Rental</SelectItem>
-                      </SelectContent>
-                    </Select>
-                  </div>
-                  
-                  <div className="space-y-2">
-                    <Label htmlFor="message">Message</Label>
-                    <Textarea 
-                      id="message"
-                      name="message"
-                      placeholder="Tell us about your workspace needs and how we can help..." 
-                      rows={5} 
+
+                  {/* Contact Info */}
+                  <div>
+                    <label className="text-sm text-gray-600 mb-2 flex items-center gap-2">
+                      <Mail className="h-4 w-4" />
+                      Email Address
+                    </label>
+                    <Input
+                      type="email"
+                      placeholder="your.email@company.com"
+                      value={email}
+                      onChange={(e) => setEmail(e.target.value)}
+                      required
+                      className="border-2 border-gray-200 hover:border-[#00009f]/50 focus:border-[#00009f]"
                     />
                   </div>
-                  
+
+                  <div>
+                    <label className="text-sm text-gray-600 mb-2 flex items-center gap-2">
+                      <Phone className="h-4 w-4" />
+                      Phone Number
+                    </label>
+                    <Input
+                      type="tel"
+                      placeholder="+20 123 456 7890"
+                      value={phone}
+                      onChange={(e) => setPhone(e.target.value)}
+                      className="border-2 border-gray-200 hover:border-[#00009f]/50 focus:border-[#00009f]"
+                    />
+                  </div>
+
+                  {/* Interest Selection */}
+                  <div>
+                    <label className="text-sm text-gray-600 mb-2 flex items-center gap-2">
+                      <Calendar className="h-4 w-4" />
+                      I'm interested in
+                    </label>
+                    <div className="grid grid-cols-2 gap-2">
+                      {interestOptions.map((option) => (
+                        <div
+                          key={option.value}
+                          onClick={() => setInterest(option.value)}
+                          className={`border-2 rounded-lg p-3 cursor-pointer transition-all ${
+                            interest === option.value
+                              ? 'border-[#00009f] bg-[#00009f]/5' 
+                              : 'border-gray-200 hover:border-[#00009f]/50'
+                          }`}
+                        >
+                          <div className="text-sm font-medium">{option.label}</div>
+                          <div className="text-xs text-gray-500">{option.description}</div>
+                        </div>
+                      ))}
+                    </div>
+                  </div>
+
+                  {/* Message */}
+                  <div>
+                    <label className="text-sm text-gray-600 mb-2 flex items-center gap-2">
+                      <MessageSquare className="h-4 w-4" />
+                      Message (Optional)
+                    </label>
+                    <Textarea
+                      placeholder="Tell us about your workspace needs and how we can help..."
+                      value={message}
+                      onChange={(e) => setMessage(e.target.value)}
+                      rows={4}
+                      className="border-2 border-gray-200 hover:border-[#00009f]/50 focus:border-[#00009f] resize-none"
+                    />
+                  </div>
+
                   <Button 
                     type="submit" 
-                    className="w-full bg-[#00009f] hover:bg-[#000080] h-12"
+                    className="w-full bg-[#00009f] hover:bg-[#000080] h-12 sm:h-14 text-base sm:text-lg"
                     disabled={isSubmitting}
                   >
                     {isSubmitting ? (
@@ -159,10 +226,14 @@ export function Contact() {
                     ) : (
                       <>
                         <Send className="mr-2 h-4 w-4" />
-                        Send via WhatsApp
+                        Send Message
                       </>
                     )}
                   </Button>
+
+                  <p className="text-xs text-center text-gray-500">
+                    We'll respond within 24 hours • Secure & Private • WhatsApp integration available
+                  </p>
                 </form>
               </CardContent>
             </Card>

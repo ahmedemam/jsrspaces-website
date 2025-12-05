@@ -2,6 +2,8 @@ import { useEffect } from "react";
 import { Routes, Route, useLocation } from "react-router-dom";
 import { HomePage } from "./pages/HomePage";
 import { ContactPage } from "./pages/ContactPage";
+import { ServicePage } from "./pages/ServicePage";
+import { VirtualPage } from "./pages/VirtualPage";
 import { trackVisitor, incrementUniqueVisitorCount } from "./utils/visitorTracking";
 import { hasCookieConsent } from "./components/CookieConsent";
 import { initAllAnalytics, trackPageViewAll } from "./utils/analytics";
@@ -38,9 +40,14 @@ function AppContent() {
   // Track page views on route changes
   useEffect(() => {
     if (hasCookieConsent()) {
-      const pageTitle = location.pathname === '/contact' 
-        ? 'Contact Us - JSR Spaces' 
-        : 'JSR Spaces - Coworking Space in Cairo';
+      let pageTitle = 'JSR Spaces - Coworking Space in Cairo';
+      if (location.pathname === '/contact') {
+        pageTitle = 'Contact Us - JSR Spaces';
+      } else if (location.pathname === '/service') {
+        pageTitle = 'Our Services - JSR Spaces';
+      } else if (location.pathname === '/virtual') {
+        pageTitle = 'Virtual Office Solutions - JSR Spaces';
+      }
       trackPageViewAll(location.pathname, pageTitle);
     }
   }, [location]);
@@ -93,6 +100,8 @@ function AppContent() {
     <Routes>
       <Route path="/" element={<HomePage />} />
       <Route path="/contact" element={<ContactPage />} />
+      <Route path="/service" element={<ServicePage />} />
+      <Route path="/virtual" element={<VirtualPage />} />
     </Routes>
   );
 }

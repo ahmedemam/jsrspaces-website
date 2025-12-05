@@ -2,7 +2,7 @@ import { useState } from "react";
 import { motion, AnimatePresence } from "motion/react";
 import { MessageCircle, X, Phone, Calendar } from "lucide-react";
 import { Button } from "./ui/button";
-import { trackConversion } from "../utils/analytics";
+import { trackConversionAll } from "../utils/analytics";
 
 export function FloatingWhatsApp() {
   const [isOpen, setIsOpen] = useState(false);
@@ -10,7 +10,7 @@ export function FloatingWhatsApp() {
   const handleWhatsApp = () => {
     const message = "Hi! I'm interested in JSR Spaces. Can you tell me more?";
     window.open(`https://wa.me/201040806692?text=${encodeURIComponent(message)}`, '_blank');
-    trackConversion.whatsappClick();
+    trackConversionAll.whatsappClick();
     setIsOpen(false);
   };
 

@@ -52,8 +52,8 @@ export function VirtualAddress() {
   const packages = [
     {
       name: "Basic Virtual Office",
-      price: "1,500",
-      period: "month",
+      price: "3,000",
+      period: "year",
       features: [
         "Premium business address",
         "Mail receiving & scanning",
@@ -64,8 +64,8 @@ export function VirtualAddress() {
     },
     {
       name: "Professional Virtual Office",
-      price: "2,800",
-      period: "month",
+      price: "6,000",
+      period: "year",
       popular: true,
       features: [
         "Everything in Basic",
@@ -78,8 +78,8 @@ export function VirtualAddress() {
     },
     {
       name: "Enterprise Virtual Office",
-      price: "4,500",
-      period: "month",
+      price: "9,000",
+      period: "year",
       features: [
         "Everything in Professional",
         "Unlimited meeting room access",
@@ -201,7 +201,7 @@ export function VirtualAddress() {
                           : "bg-gray-900 hover:bg-gray-800"
                       }`}
                       onClick={() => {
-                        const message = `Hi! I'm interested in the ${pkg.name} package (${pkg.price} EGP/month). Can you provide more details?`;
+                        const message = `Hi! I'm interested in the ${pkg.name} package (${pkg.price} EGP/${pkg.period}). Can you provide more details?`;
                         window.open(
                           `https://wa.me/201040806692?text=${encodeURIComponent(message)}`,
                           "_blank"

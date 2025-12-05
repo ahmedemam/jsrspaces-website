@@ -85,11 +85,11 @@ export function trackEvent(
 }
 
 /**
- * Track conversion events (tracks in both GA4 and Umami)
+ * Track conversion events (GA4 only)
  */
 export const trackConversion = {
   contactFormSubmit: () => {
-    trackEventAll('contact_form_submit', {
+    trackEvent('contact_form_submit', {
       category: 'conversion',
       action: 'submit',
       label: 'Contact Form',
@@ -97,7 +97,7 @@ export const trackConversion = {
   },
 
   whatsappClick: () => {
-    trackEventAll('whatsapp_click', {
+    trackEvent('whatsapp_click', {
       category: 'conversion',
       action: 'click',
       label: 'WhatsApp Button',
@@ -105,7 +105,7 @@ export const trackConversion = {
   },
 
   newsletterSignup: () => {
-    trackEventAll('newsletter_signup', {
+    trackEvent('newsletter_signup', {
       category: 'conversion',
       action: 'signup',
       label: 'Newsletter',
@@ -113,7 +113,7 @@ export const trackConversion = {
   },
 
   tourBooking: () => {
-    trackEventAll('tour_booking', {
+    trackEvent('tour_booking', {
       category: 'conversion',
       action: 'book',
       label: 'Tour Booking',
@@ -121,7 +121,7 @@ export const trackConversion = {
   },
 
   pricingView: (planName: string) => {
-    trackEventAll('pricing_view', {
+    trackEvent('pricing_view', {
       category: 'engagement',
       action: 'view',
       label: planName,
@@ -129,12 +129,71 @@ export const trackConversion = {
   },
 
   scrollDepth: (depth: number) => {
-    trackEventAll('scroll_depth', {
+    trackEvent('scroll_depth', {
       category: 'engagement',
       action: 'scroll',
       label: `${depth}%`,
       value: depth,
     });
+  },
+};
+
+/**
+ * Track conversion events in all analytics (GA4 + Umami)
+ */
+export const trackConversionAll = {
+  contactFormSubmit: () => {
+    trackConversion.contactFormSubmit();
+    if (import.meta.env.VITE_UMAMI_WEBSITE_ID) {
+      import('./umami').then(({ trackUmamiConversion }) => {
+        trackUmamiConversion.contactFormSubmit();
+      });
+    }
+  },
+
+  whatsappClick: () => {
+    trackConversion.whatsappClick();
+    if (import.meta.env.VITE_UMAMI_WEBSITE_ID) {
+      import('./umami').then(({ trackUmamiConversion }) => {
+        trackUmamiConversion.whatsappClick();
+      });
+    }
+  },
+
+  newsletterSignup: () => {
+    trackConversion.newsletterSignup();
+    if (import.meta.env.VITE_UMAMI_WEBSITE_ID) {
+      import('./umami').then(({ trackUmamiConversion }) => {
+        trackUmamiConversion.newsletterSignup();
+      });
+    }
+  },
+
+  tourBooking: () => {
+    trackConversion.tourBooking();
+    if (import.meta.env.VITE_UMAMI_WEBSITE_ID) {
+      import('./umami').then(({ trackUmamiConversion }) => {
+        trackUmamiConversion.tourBooking();
+      });
+    }
+  },
+
+  pricingView: (planName: string) => {
+    trackConversion.pricingView(planName);
+    if (import.meta.env.VITE_UMAMI_WEBSITE_ID) {
+      import('./umami').then(({ trackUmamiConversion }) => {
+        trackUmamiConversion.pricingView(planName);
+      });
+    }
+  },
+
+  buttonClick: (buttonName: string, location?: string) => {
+    trackEngagement.buttonClick(buttonName, location);
+    if (import.meta.env.VITE_UMAMI_WEBSITE_ID) {
+      import('./umami').then(({ trackUmamiConversion }) => {
+        trackUmamiConversion.buttonClick(buttonName, location);
+      });
+    }
   },
 };
 

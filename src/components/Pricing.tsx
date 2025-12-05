@@ -41,7 +41,7 @@ const monthlyPlans = [
   {
     name: "Dedicated Desk",
     icon: Crown,
-    price: "5,200",
+    price: "3,200",
     period: "month",
     description: "Your own space in our vibrant community",
     features: [
@@ -60,7 +60,7 @@ const monthlyPlans = [
   {
     name: "Private Office",
     icon: Crown,
-    price: "14,500",
+    price: "6,000",
     period: "month",
     description: "Premium office space for growing teams",
     features: [

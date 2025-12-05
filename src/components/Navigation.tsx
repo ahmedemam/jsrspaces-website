@@ -37,19 +37,14 @@ export function Navigation() {
     }
   };
 
-  const handleContactClick = () => {
-    // Always navigate to contact page
-    setIsMobileMenuOpen(false);
-  };
 
   const navItems = [
-    { label: "About", id: "about" },
-    { label: "Spaces", id: "spaces" },
-    { label: "Amenities", id: "amenities" },
-    { label: "Community", id: "community" },
-    { label: "Pricing", id: "pricing" },
-    { label: "Location", id: "locations" },
-    { label: "Contact", id: "contact" }
+    { label: "About", id: "about", route: null },
+    { label: "Services", id: "services", route: "/service" },
+    { label: "Virtual Office", id: "virtual", route: "/virtual" },
+    { label: "Pricing", id: "pricing", route: null },
+    { label: "Location", id: "locations", route: null },
+    { label: "Contact", id: "contact", route: "/contact" }
   ];
 
   return (
@@ -70,12 +65,12 @@ export function Navigation() {
           {/* Desktop Menu */}
           <div className="hidden md:flex items-center space-x-8">
             {navItems.map((item) => {
-              if (item.id === 'contact') {
+              if (item.route) {
                 return (
                   <Link
                     key={item.id}
-                    to="/contact"
-                    onClick={handleContactClick}
+                    to={item.route}
+                    onClick={() => setIsMobileMenuOpen(false)}
                     className={`transition-colors hover:text-[#00009f] ${
                       isScrolled ? "text-gray-700" : "text-white"
                     }`}
@@ -85,23 +80,23 @@ export function Navigation() {
                 );
               }
               return (
-                <button
-                  key={item.id}
-                  onClick={() => scrollToSection(item.id)}
-                  className={`transition-colors hover:text-[#00009f] ${
-                    isScrolled ? "text-gray-700" : "text-white"
-                  }`}
-                >
-                  {item.label}
-                </button>
+              <button
+                key={item.id}
+                onClick={() => scrollToSection(item.id)}
+                className={`transition-colors hover:text-[#00009f] ${
+                  isScrolled ? "text-gray-700" : "text-white"
+                }`}
+              >
+                {item.label}
+              </button>
               );
             })}
             <Link to="/contact">
-              <Button 
-                className="bg-[#00009f] hover:bg-[#000080]"
-              >
-                Book a Tour
-              </Button>
+            <Button 
+              className="bg-[#00009f] hover:bg-[#000080]"
+            >
+              Book a Tour
+            </Button>
             </Link>
           </div>
 
@@ -130,12 +125,12 @@ export function Navigation() {
           >
             <div className="px-4 py-4 space-y-3">
               {navItems.map((item) => {
-                if (item.id === 'contact') {
+                if (item.route) {
                   return (
                     <Link
                       key={item.id}
-                      to="/contact"
-                      onClick={handleContactClick}
+                      to={item.route}
+                      onClick={() => setIsMobileMenuOpen(false)}
                       className="block w-full text-left py-2 text-gray-700 hover:text-[#00009f]"
                     >
                       {item.label}
@@ -143,21 +138,21 @@ export function Navigation() {
                   );
                 }
                 return (
-                  <button
-                    key={item.id}
-                    onClick={() => scrollToSection(item.id)}
-                    className="block w-full text-left py-2 text-gray-700 hover:text-[#00009f]"
-                  >
-                    {item.label}
-                  </button>
+                <button
+                  key={item.id}
+                  onClick={() => scrollToSection(item.id)}
+                  className="block w-full text-left py-2 text-gray-700 hover:text-[#00009f]"
+                >
+                  {item.label}
+                </button>
                 );
               })}
               <Link to="/contact" onClick={() => setIsMobileMenuOpen(false)}>
-                <Button 
-                  className="w-full bg-[#00009f] hover:bg-[#000080]"
-                >
-                  Book a Tour
-                </Button>
+              <Button 
+                className="w-full bg-[#00009f] hover:bg-[#000080]"
+              >
+                Book a Tour
+              </Button>
               </Link>
             </div>
           </motion.div>
