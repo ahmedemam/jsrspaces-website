@@ -35,23 +35,23 @@ export function Hero() {
           <motion.div
             key={index}
             initial={{ opacity: 0 }}
-            animate={{ 
+            animate={{
               opacity: index === currentIndex ? 1 : 0,
             }}
             transition={{ duration: 1.5, ease: "easeInOut" }}
             className="absolute inset-0 w-full h-full"
-            style={{ 
+            style={{
               zIndex: index === currentIndex ? 1 : 0,
               pointerEvents: index === currentIndex ? 'auto' : 'none'
             }}
           >
             <img
               src={image}
-              alt={index === 0 
-                ? "Modern premium coworking space in Nasr City Cairo with contemporary design and natural lighting" 
+              alt={index === 0
+                ? "Modern premium coworking space in Nasr City Cairo with contemporary design and natural lighting"
                 : index === 1
-                ? "Professional workspace environment at JSR Spaces coworking space in Cairo Egypt"
-                : "Innovative coworking space interior at JSR Spaces Nasr City with modern amenities and collaborative areas"}
+                  ? "Professional workspace environment at JSR Spaces coworking space in Cairo Egypt"
+                  : "Innovative coworking space interior at JSR Spaces Nasr City with modern amenities and collaborative areas"}
               className="w-full h-full min-h-[600px] sm:min-h-[700px] object-cover"
               loading={index === 0 ? "eager" : "lazy"}
               fetchPriority={index === 0 ? "high" : "low"}
@@ -60,7 +60,7 @@ export function Hero() {
           </motion.div>
         ))}
       </div>
-      
+
       <div className="relative z-10 h-full max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 flex items-center py-32 sm:py-20">
         <div className="text-white max-w-3xl w-full">
           <motion.div
@@ -92,8 +92,8 @@ export function Hero() {
             transition={{ duration: 0.8, delay: 0.4 }}
             className="text-base sm:text-lg md:text-xl lg:text-2xl mb-8 sm:mb-10 text-gray-200 leading-relaxed"
           >
-            Premium coworking spaces designed for entrepreneurs, creatives, and visionaries 
-            shaping the future of Cairo's business landscape.
+            Premium coworking spaces tailored for <span className="text-white font-medium">Students, Freelancers, Startups, and SMEs</span>.
+            Enjoy exclusive discounts and a community shaping the future of Cairo's business landscape.
           </motion.p>
 
           <motion.div
@@ -102,16 +102,16 @@ export function Hero() {
             transition={{ duration: 0.8, delay: 0.5 }}
             className="flex flex-col sm:flex-row gap-3 sm:gap-4 mb-8 sm:mb-12"
           >
-            <Button 
-              size="lg" 
+            <Button
+              size="lg"
               onClick={() => scrollToSection('contact')}
               className="bg-[#00009f] hover:bg-[#000080] text-base sm:text-lg px-6 sm:px-8 py-5 sm:py-6 shadow-xl hover:shadow-2xl transition-all w-full sm:w-auto"
             >
               Book a Tour <ArrowRight className="ml-2 h-4 w-4 sm:h-5 sm:w-5" />
             </Button>
-            <Button 
-              size="lg" 
-              variant="outline" 
+            <Button
+              size="lg"
+              variant="outline"
               className="bg-white/10 backdrop-blur-md border-white/30 text-white hover:bg-white/20 text-base sm:text-lg px-6 sm:px-8 py-5 sm:py-6 w-full sm:w-auto"
               onClick={() => scrollToSection('pricing')}
             >
@@ -143,9 +143,9 @@ export function Hero() {
             <div>
               <div className="flex items-center gap-1 sm:gap-2 mb-1 sm:mb-2">
                 <Award className="h-4 w-4 sm:h-5 sm:w-5 text-blue-200 flex-shrink-0" />
-                <span className="text-xl sm:text-2xl md:text-3xl">#1</span>
+                <span className="text-xl sm:text-2xl md:text-3xl">20%</span>
               </div>
-              <div className="text-gray-300 text-xs sm:text-sm">Rated Workspace</div>
+              <div className="text-gray-300 text-xs sm:text-sm">Student Discount</div>
             </div>
           </motion.div>
         </div>
