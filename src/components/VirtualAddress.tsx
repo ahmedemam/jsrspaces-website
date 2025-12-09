@@ -57,7 +57,6 @@ export function VirtualAddress() {
       features: [
         "Premium business address",
         "Mail receiving & scanning",
-        "5 hours meeting room access",
         "Call forwarding service",
         "Business registration support",
       ],
@@ -71,7 +70,7 @@ export function VirtualAddress() {
         "Everything in Basic",
         "Dedicated phone line",
         "Professional call answering",
-        "15 hours meeting room access",
+        "3 hours/month meeting room access",
         "Mail forwarding (local)",
         "Package handling",
       ],
@@ -156,7 +155,7 @@ export function VirtualAddress() {
           <h3 className="text-2xl sm:text-3xl text-center mb-8 sm:mb-12">
             Choose Your <span className="text-[#00009f]">Virtual Office Plan</span>
           </h3>
-          
+
           <div className="grid md:grid-cols-3 gap-6 sm:gap-8">
             {packages.map((pkg, index) => (
               <motion.div
@@ -167,11 +166,10 @@ export function VirtualAddress() {
                 transition={{ delay: index * 0.1 }}
               >
                 <Card
-                  className={`relative h-full border-2 transition-all ${
-                    pkg.popular
+                  className={`relative h-full border-2 transition-all ${pkg.popular
                       ? "border-[#00009f] shadow-xl scale-105"
                       : "border-gray-200 hover:border-[#00009f] hover:shadow-lg"
-                  }`}
+                    }`}
                 >
                   {pkg.popular && (
                     <div className="absolute -top-4 left-1/2 transform -translate-x-1/2">
@@ -195,11 +193,10 @@ export function VirtualAddress() {
                       ))}
                     </ul>
                     <Button
-                      className={`w-full h-11 sm:h-12 ${
-                        pkg.popular
+                      className={`w-full h-11 sm:h-12 ${pkg.popular
                           ? "bg-[#00009f] hover:bg-[#000080]"
                           : "bg-gray-900 hover:bg-gray-800"
-                      }`}
+                        }`}
                       onClick={() => {
                         const message = `Hi! I'm interested in the ${pkg.name} package (${pkg.price} EGP/${pkg.period}). Can you provide more details?`;
                         window.open(

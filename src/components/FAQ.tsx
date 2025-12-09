@@ -12,7 +12,7 @@ import { MessageCircle } from "lucide-react";
 const faqs = [
   {
     question: "What's included in the membership?",
-    answer: "All memberships include high-speed WiFi, access to common areas, printing services, complimentary coffee and tea, community events, and mail handling. Higher-tier plans include dedicated desks, meeting rooms, and 24/7 access."
+    answer: "All memberships include high-speed WiFi, access to common areas, complimentary coffee and tea, and community events. Higher-tier plans include dedicated desks and meeting rooms."
   },
   {
     question: "Can I visit before committing?",
@@ -32,7 +32,7 @@ const faqs = [
   },
   {
     question: "What are your operating hours?",
-    answer: "Our spaces are open Monday-Friday 8am-8pm and Saturday 9am-5pm. Dedicated Desk and Private Office members enjoy 24/7 access with their keycard. Reception services are available during business hours."
+    answer: "Our spaces are open Monday-Friday 8am-8pm and Saturday 9am-5pm. Reception services are available during business hours."
   },
   {
     question: "Can I upgrade or downgrade my plan?",
@@ -101,7 +101,7 @@ export function FAQ() {
           <p className="text-gray-600 mb-6">
             Our team is here to help you find the perfect workspace solution.
           </p>
-          <Button 
+          <Button
             onClick={() => {
               const message = "Hi! I have questions about JSR Spaces.";
               window.open(`https://wa.me/201040806692?text=${encodeURIComponent(message)}`, '_blank');

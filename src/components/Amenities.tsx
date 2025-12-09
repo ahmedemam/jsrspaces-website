@@ -1,9 +1,9 @@
-import { 
-  Wifi, 
-  Coffee, 
-  Printer, 
-  Shield, 
-  Utensils, 
+import {
+  Wifi,
+  Coffee,
+  Printer,
+  Shield,
+  Utensils,
   Headphones,
   Dumbbell,
   Sparkles,
@@ -126,7 +126,7 @@ const amenitiesCategories = {
     {
       icon: Shield,
       title: "Enterprise Security",
-      description: "Biometric access, CCTV, and 24/7 security personnel"
+      description: "Biometric access, CCTV, and on-site security personnel"
     },
     {
       icon: Leaf,
@@ -165,7 +165,7 @@ export function Amenities() {
             Experience a workspace designed for the modern professional—where luxury meets productivity
           </p>
         </motion.div>
-        
+
         <Tabs defaultValue="workspace" className="w-full">
           <TabsList className="grid w-full grid-cols-2 lg:grid-cols-4 mb-12 h-auto">
             <TabsTrigger value="workspace" className="py-3">Workspace Tech</TabsTrigger>
@@ -173,7 +173,7 @@ export function Amenities() {
             <TabsTrigger value="community" className="py-3">Community</TabsTrigger>
             <TabsTrigger value="innovation" className="py-3">Innovation</TabsTrigger>
           </TabsList>
-          
+
           {Object.entries(amenitiesCategories).map(([category, amenities]) => (
             <TabsContent key={category} value={category}>
               <div className="grid md:grid-cols-2 lg:grid-cols-3 gap-6">

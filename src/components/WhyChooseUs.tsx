@@ -1,15 +1,15 @@
 import { motion } from "motion/react";
 import { Badge } from "./ui/badge";
 import { Card, CardContent } from "./ui/card";
-import { 
-  Zap, 
-  Shield, 
-  Users, 
-  Clock, 
-  Award, 
+import {
+  Zap,
+  Shield,
+  Users,
+  Clock,
+  Award,
   Sparkles,
   Heart,
-  TrendingUp 
+  TrendingUp
 } from "lucide-react";
 
 const features = [
@@ -22,7 +22,7 @@ const features = [
   {
     icon: Shield,
     title: "Enterprise Security",
-    description: "24/7 security, biometric access, CCTV surveillance, and secure data infrastructure to protect your business.",
+    description: "On-site security, biometric access, CCTV surveillance, and secure data infrastructure to protect your business.",
     gradient: "from-blue-400 to-blue-600"
   },
   {
@@ -34,7 +34,7 @@ const features = [
   {
     icon: Clock,
     title: "Flexible Access",
-    description: "24/7 access for dedicated members. Work on your schedule, not ours. Weekend access included.",
+    description: "Extended access hours. Work on your schedule, not ours. Weekend access included.",
     gradient: "from-green-400 to-green-600"
   },
   {
@@ -81,7 +81,7 @@ export function WhyChooseUs() {
             More Than Just a <span className="text-[#00009f]">Workspace</span>
           </h2>
           <p className="text-gray-600 max-w-3xl mx-auto text-lg">
-            We've reimagined coworking to create an ecosystem where professionals thrive, 
+            We've reimagined coworking to create an ecosystem where professionals thrive,
             businesses grow, and communities flourish.
           </p>
         </motion.div>
@@ -98,7 +98,7 @@ export function WhyChooseUs() {
               <Card className="h-full border-none shadow-lg hover:shadow-xl transition-all group relative overflow-hidden">
                 {/* Gradient Hover Effect */}
                 <div className={`absolute inset-0 bg-gradient-to-br ${feature.gradient} opacity-0 group-hover:opacity-5 transition-opacity`} />
-                
+
                 <CardContent className="p-6 relative z-10">
                   <div className={`inline-flex p-3 rounded-xl bg-gradient-to-br ${feature.gradient} mb-4 shadow-md`}>
                     <feature.icon className="h-6 w-6 text-white" />
@@ -124,8 +124,8 @@ export function WhyChooseUs() {
         >
           <div className="inline-block bg-gradient-to-r from-[#00009f]/10 to-blue-100/50 rounded-2xl p-8 max-w-3xl">
             <p className="text-xl text-gray-700 leading-relaxed">
-              "JSR Spaces isn't just about providing desks and WiFi. We're building a community 
-              where <span className="text-[#00009f]">innovation happens</span>, 
+              "JSR Spaces isn't just about providing desks and WiFi. We're building a community
+              where <span className="text-[#00009f]">innovation happens</span>,
               connections are made, and <span className="text-[#00009f]">dreams become reality</span>."
             </p>
             <div className="mt-4 text-gray-600">— JSR Spaces Team</div>

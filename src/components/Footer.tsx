@@ -19,12 +19,12 @@ export function Footer() {
               <span className="text-blue-200">JSR</span> Spaces
             </h3>
             <p className="text-gray-400 mb-6 leading-relaxed">
-              Cairo's premier coworking ecosystem for innovators, entrepreneurs, 
+              Cairo's premier coworking ecosystem for innovators, entrepreneurs,
               and visionaries building tomorrow's success stories.
             </p>
             <div className="flex gap-4">
-              <a 
-                href="https://www.facebook.com/jsrspaces/" 
+              <a
+                href="https://www.facebook.com/jsrspaces/"
                 target="_blank"
                 rel="noopener noreferrer"
                 className="hover:text-blue-200 transition-colors p-2 bg-white/5 rounded-lg hover:bg-white/10"
@@ -32,8 +32,8 @@ export function Footer() {
               >
                 <Facebook className="h-5 w-5" />
               </a>
-              <a 
-                href="https://www.instagram.com/jsrspaces/" 
+              <a
+                href="https://www.instagram.com/jsrspaces/"
                 target="_blank"
                 rel="noopener noreferrer"
                 className="hover:text-blue-200 transition-colors p-2 bg-white/5 rounded-lg hover:bg-white/10"
@@ -41,8 +41,8 @@ export function Footer() {
               >
                 <Instagram className="h-5 w-5" />
               </a>
-              <a 
-                href="https://www.linkedin.com/company/jsrspaces/" 
+              <a
+                href="https://www.linkedin.com/company/jsrspaces/"
                 target="_blank"
                 rel="noopener noreferrer"
                 className="hover:text-blue-200 transition-colors p-2 bg-white/5 rounded-lg hover:bg-white/10"
@@ -50,8 +50,8 @@ export function Footer() {
               >
                 <Linkedin className="h-5 w-5" />
               </a>
-              <a 
-                href="https://www.tiktok.com/@jsrspaces" 
+              <a
+                href="https://www.tiktok.com/@jsrspaces"
                 target="_blank"
                 rel="noopener noreferrer"
                 className="hover:text-blue-200 transition-colors p-2 bg-white/5 rounded-lg hover:bg-white/10"
@@ -61,7 +61,7 @@ export function Footer() {
               </a>
             </div>
           </div>
-          
+
           {/* Quick Links */}
           <div>
             <h4 className="mb-4">Explore</h4>
@@ -93,7 +93,7 @@ export function Footer() {
               </li>
             </ul>
           </div>
-          
+
           {/* Resources */}
           <div>
             <h4 className="mb-4">Resources</h4>
@@ -105,14 +105,14 @@ export function Footer() {
               <li><a href="#" className="hover:text-blue-200 transition-colors">Careers</a></li>
             </ul>
           </div>
-          
+
           {/* Contact */}
           <div>
             <h4 className="mb-4">Contact</h4>
             <ul className="space-y-3 text-gray-400">
               <li className="flex items-start gap-2">
                 <MapPin className="h-5 w-5 text-orange-500 flex-shrink-0 mt-0.5" />
-                <a 
+                <a
                   href="https://maps.app.goo.gl/vWGqsQhxdpb2L9gV7"
                   target="_blank"
                   rel="noopener noreferrer"
@@ -136,11 +136,11 @@ export function Footer() {
             </ul>
           </div>
         </div>
-        
+
         <Separator className="bg-gray-800 mb-8" />
-        
+
         <div className="flex flex-col md:flex-row justify-between items-center gap-4 text-gray-400 text-sm">
-          <p>&copy; 2024 JSR Spaces. All rights reserved.</p>
+          <p>&copy; 2026 JSR Spaces. All rights reserved.</p>
           <div className="flex gap-6">
             <a href="#" className="hover:text-blue-200 transition-colors">Privacy Policy</a>
             <a href="#" className="hover:text-blue-200 transition-colors">Terms of Service</a>

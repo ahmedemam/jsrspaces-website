@@ -46,7 +46,7 @@ export function HomePage() {
       <WorkspaceTypes />
       <Amenities />
       <HowItWorks />
-      <LiveAvailability />
+      {/* <LiveAvailability /> */}
       {/* Hidden sections - can be uncommented to show */}
       {/* <VideoSection /> */}
       {/* <Community /> */}
@@ -63,23 +63,23 @@ export function HomePage() {
       <Contact />
       <Newsletter />
       <Footer />
-      
+
       {/* Floating WhatsApp Button */}
       <FloatingWhatsApp />
-      
+
       {/* Toast Notifications */}
       <Toaster />
-      
+
       {/* Structured Data for SEO */}
       <StructuredData />
       <FAQStructuredData />
       <ReviewStructuredData />
-      <BreadcrumbStructuredData 
+      <BreadcrumbStructuredData
         items={[
           { name: "Home", url: "https://www.jsrspaces.com/" }
         ]}
       />
-      
+
       {/* Cookie Consent Banner */}
       <CookieConsent />
     </div>

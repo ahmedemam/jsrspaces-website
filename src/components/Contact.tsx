@@ -33,7 +33,7 @@ export function Contact() {
 
   const handleSubmit = async (e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault();
-    
+
     if (!firstName || !email) {
       toast.error('Please fill in your name and email');
       return;
@@ -76,7 +76,7 @@ export function Contact() {
     } catch (error) {
       console.error('Error submitting contact form:', error);
       toast.error('An error occurred. Please try again or contact us directly via WhatsApp.');
-      
+
       // Fallback: Open WhatsApp directly if ERPNext fails
       const whatsappMessage = `Hi! I'm ${firstName}${lastName ? ' ' + lastName : ''} and I'm interested in JSR Spaces. ${finalMessage}`;
       const whatsappUrl = `https://wa.me/201040806692?text=${encodeURIComponent(whatsappMessage)}`;
@@ -104,7 +104,7 @@ export function Contact() {
             Ready to elevate your work experience? Reach out and join Cairo's most innovative community
           </p>
         </motion.div>
-        
+
         <div className="grid lg:grid-cols-2 gap-8 sm:gap-12">
           {/* Contact Form - Booking Style */}
           <motion.div
@@ -185,11 +185,10 @@ export function Contact() {
                         <div
                           key={option.value}
                           onClick={() => setInterest(option.value)}
-                          className={`border-2 rounded-lg p-3 cursor-pointer transition-all ${
-                            interest === option.value
-                              ? 'border-[#00009f] bg-[#00009f]/5' 
+                          className={`border-2 rounded-lg p-3 cursor-pointer transition-all ${interest === option.value
+                              ? 'border-[#00009f] bg-[#00009f]/5'
                               : 'border-gray-200 hover:border-[#00009f]/50'
-                          }`}
+                            }`}
                         >
                           <div className="text-sm font-medium">{option.label}</div>
                           <div className="text-xs text-gray-500">{option.description}</div>
@@ -213,8 +212,8 @@ export function Contact() {
                     />
                   </div>
 
-                  <Button 
-                    type="submit" 
+                  <Button
+                    type="submit"
                     className="w-full bg-[#00009f] hover:bg-[#000080] h-12 sm:h-14 text-base sm:text-lg"
                     disabled={isSubmitting}
                   >
@@ -238,7 +237,7 @@ export function Contact() {
               </CardContent>
             </Card>
           </motion.div>
-          
+
           {/* Contact Info */}
           <motion.div
             initial={{ opacity: 0, x: 20 }}
@@ -266,7 +265,7 @@ export function Contact() {
                 </div>
               </CardContent>
             </Card>
-            
+
             {/* Contact Details */}
             <Card className="border-none shadow-lg hover:shadow-xl transition-shadow">
               <CardContent className="p-8">
@@ -282,7 +281,7 @@ export function Contact() {
                     <div className="text-sm text-gray-500 mt-1">Sales & Inquiries</div>
                   </div>
                 </div>
-                
+
                 <div className="flex items-start gap-4">
                   <div className="p-3 rounded-xl bg-[#00009f]/10">
                     <Mail className="h-6 w-6 text-[#00009f]" />
@@ -297,7 +296,7 @@ export function Contact() {
                 </div>
               </CardContent>
             </Card>
-            
+
             {/* Hours */}
             <Card className="border-none shadow-lg hover:shadow-xl transition-shadow">
               <CardContent className="p-8">
@@ -323,7 +322,7 @@ export function Contact() {
                     </div>
                     <div className="mt-4 pt-4 border-t text-sm text-gray-500">
                       <Badge variant="outline" className="text-[#00009f] border-[#00009f]">
-                        24/7 Access for Members
+                        Extended Access for Members
                       </Badge>
                     </div>
                   </div>

@@ -16,8 +16,7 @@ const monthlyPlans = [
       "Access to open workspace",
       "High-speed WiFi",
       "Free coffee & tea",
-      "Community events access",
-      "Printing credits (50 pages)"
+      "Community events access"
     ],
     badge: "Flexible"
   },
@@ -31,7 +30,6 @@ const monthlyPlans = [
       "Access to open workspace",
       "High-speed gigabit WiFi",
       "Unlimited coffee & tea",
-      "Printing credits (200 pages)",
       "Community events & workshops",
       "Business lounge access",
       "App-based booking"
@@ -46,10 +44,8 @@ const monthlyPlans = [
     description: "Your own space in our vibrant community",
     features: [
       "Your own dedicated desk",
-      "24/7 access to workspace",
       "Lockable storage cabinet",
       "All Hot Desk benefits",
-      "Mail handling & forwarding",
       "10 meeting room hours/month",
       "Dual 4K monitors",
       "Priority event registration"
@@ -65,7 +61,7 @@ const monthlyPlans = [
     description: "Premium office space for growing teams",
     features: [
       "Private lockable office (2-6 people)",
-      "24/7 access with keycard",
+      "Keycard access",
       "Customizable branding",
       "All Dedicated Desk benefits",
       "Unlimited meeting rooms",
@@ -107,7 +103,7 @@ const enterprisePlans = [
       "Branded reception area",
       "Priority event hosting",
       "Flexible terms & contracts",
-      "24/7 support hotline"
+      "Priority support hotline"
     ],
     badge: "Contact Us"
   }
@@ -142,6 +138,27 @@ export function Pricing() {
           </p>
         </motion.div>
 
+        {/* Discount Banner */}
+        <motion.div
+          initial={{ opacity: 0, scale: 0.95 }}
+          whileInView={{ opacity: 1, scale: 1 }}
+          viewport={{ once: true }}
+          className="bg-[#00009f]/5 border border-[#00009f]/10 rounded-2xl p-6 mb-12 text-center max-w-2xl mx-auto"
+        >
+          <div className="flex flex-col sm:flex-row items-center justify-center gap-2 sm:gap-6">
+            <div className="flex items-center gap-2">
+              <span className="font-bold text-[#00009f] text-xl">20% OFF</span>
+              <span className="text-gray-700 font-medium">for Students</span>
+            </div>
+            <div className="hidden sm:block w-px h-6 bg-gray-300"></div>
+            <div className="flex items-center gap-2">
+              <span className="font-bold text-[#00009f] text-xl">10% OFF</span>
+              <span className="text-gray-700 font-medium">for Freelancers</span>
+            </div>
+          </div>
+          <p className="text-sm text-gray-500 mt-2">Valid all year round with valid ID</p>
+        </motion.div>
+
         <Tabs defaultValue="monthly" className="w-full">
           <TabsList className="grid w-full max-w-md mx-auto grid-cols-2 mb-12">
             <TabsTrigger value="monthly">Monthly Plans</TabsTrigger>
@@ -158,12 +175,11 @@ export function Pricing() {
                   viewport={{ once: true }}
                   transition={{ duration: 0.6, delay: index * 0.1 }}
                 >
-                  <Card 
-                    className={`relative h-full flex flex-col ${
-                      plan.popular 
-                        ? 'border-[#00009f] border-2 shadow-2xl scale-105' 
-                        : 'border-gray-200 shadow-lg'
-                    }`}
+                  <Card
+                    className={`relative h-full flex flex-col ${plan.popular
+                      ? 'border-[#00009f] border-2 shadow-2xl scale-105'
+                      : 'border-gray-200 shadow-lg'
+                      }`}
                   >
                     {plan.badge && (
                       <div className="absolute -top-3 left-1/2 transform -translate-x-1/2">
@@ -172,14 +188,12 @@ export function Pricing() {
                         </Badge>
                       </div>
                     )}
-                    
+
                     <CardHeader>
-                      <div className={`inline-flex p-3 rounded-xl mb-4 ${
-                        plan.popular ? 'bg-[#00009f]/10' : 'bg-gray-100'
-                      }`}>
-                        <plan.icon className={`h-6 w-6 ${
-                          plan.popular ? 'text-[#00009f]' : 'text-gray-700'
-                        }`} />
+                      <div className={`inline-flex p-3 rounded-xl mb-4 ${plan.popular ? 'bg-[#00009f]/10' : 'bg-gray-100'
+                        }`}>
+                        <plan.icon className={`h-6 w-6 ${plan.popular ? 'text-[#00009f]' : 'text-gray-700'
+                          }`} />
                       </div>
                       <CardTitle className="text-2xl">{plan.name}</CardTitle>
                       <div className="mt-4">
@@ -194,7 +208,7 @@ export function Pricing() {
                       </div>
                       <p className="text-gray-600 mt-2 text-sm">{plan.description}</p>
                     </CardHeader>
-                    
+
                     <CardContent className="flex-1 flex flex-col">
                       <ul className="space-y-3 mb-6 flex-1">
                         {plan.features.map((feature, featureIndex) => (
@@ -204,17 +218,16 @@ export function Pricing() {
                           </li>
                         ))}
                       </ul>
-                      
-                      <Button 
+
+                      <Button
                         onClick={() => {
                           const element = document.getElementById('contact');
                           if (element) element.scrollIntoView({ behavior: 'smooth' });
                         }}
-                        className={`w-full ${
-                          plan.popular 
-                            ? 'bg-[#00009f] hover:bg-[#000080]' 
-                            : ''
-                        }`}
+                        className={`w-full ${plan.popular
+                          ? 'bg-[#00009f] hover:bg-[#000080]'
+                          : ''
+                          }`}
                         variant={plan.popular ? 'default' : 'outline'}
                       >
                         Get Started
@@ -242,7 +255,7 @@ export function Pricing() {
                         <Badge className="bg-[#00009f]">{plan.badge}</Badge>
                       </div>
                     )}
-                    
+
                     <CardHeader>
                       <CardTitle className="text-2xl">{plan.name}</CardTitle>
                       <div className="mt-4">
@@ -257,7 +270,7 @@ export function Pricing() {
                       </div>
                       <p className="text-gray-600 mt-2">{plan.description}</p>
                     </CardHeader>
-                    
+
                     <CardContent className="flex-1 flex flex-col">
                       <ul className="space-y-3 mb-6 flex-1">
                         {plan.features.map((feature, featureIndex) => (
@@ -267,8 +280,8 @@ export function Pricing() {
                           </li>
                         ))}
                       </ul>
-                      
-                      <Button 
+
+                      <Button
                         onClick={() => {
                           const element = document.getElementById('contact');
                           if (element) element.scrollIntoView({ behavior: 'smooth' });

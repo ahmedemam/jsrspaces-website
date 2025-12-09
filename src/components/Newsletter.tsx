@@ -1,24 +1,36 @@
 import { Button } from "./ui/button";
 import { Input } from "./ui/input";
 import { motion } from "motion/react";
-import { Send } from "lucide-react";
+import { Send, Loader2 } from "lucide-react";
 import { useState } from "react";
+import { toast } from "sonner";
 
 export function Newsletter() {
   const [email, setEmail] = useState("");
+  const [isSubmitting, setIsSubmitting] = useState(false);
 
-  const handleSubmit = (e: React.FormEvent<HTMLFormElement>) => {
+  const handleSubmit = async (e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault();
-    
+
     if (!email) return;
-    
-    // Send via WhatsApp
-    const message = `Hi! I'd like to subscribe to the JSR Spaces newsletter. My email is: ${email}`;
-    const whatsappUrl = `https://wa.me/201040806692?text=${encodeURIComponent(message)}`;
-    window.open(whatsappUrl, '_blank');
-    
-    // Clear the form
-    setEmail("");
+
+    setIsSubmitting(true);
+
+    // Simulate API call
+    try {
+      await new Promise(resolve => setTimeout(resolve, 1500));
+
+      toast.success("Thanks for subscribing!", {
+        description: "You've been added to our newsletter.",
+      });
+
+      // Clear the form
+      setEmail("");
+    } catch (error) {
+      toast.error("Something went wrong. Please try again.");
+    } finally {
+      setIsSubmitting(false);
+    }
   };
 
   return (
@@ -34,7 +46,7 @@ export function Newsletter() {
             Stay in the Loop
           </h2>
           <p className="text-blue-100 text-lg mb-8 max-w-2xl mx-auto">
-            Get exclusive updates on events, member spotlights, workspace tips, and special offers 
+            Get exclusive updates on events, member spotlights, workspace tips, and special offers
             delivered to your inbox.
           </p>
 
@@ -45,14 +57,20 @@ export function Newsletter() {
               value={email}
               onChange={(e) => setEmail(e.target.value)}
               required
+              disabled={isSubmitting}
               className="bg-white/10 backdrop-blur-md border-white/30 text-white placeholder:text-white/60 h-12 sm:h-14 text-base sm:text-lg"
             />
-            <Button 
+            <Button
               type="submit"
-              size="lg" 
+              size="lg"
+              disabled={isSubmitting}
               className="bg-white text-[#00009f] hover:bg-blue-50 h-12 sm:h-14 px-6 sm:px-8 cursor-pointer w-full sm:w-auto"
             >
-              <Send className="mr-2 h-4 w-4 sm:h-5 sm:w-5" />
+              {isSubmitting ? (
+                <Loader2 className="mr-2 h-4 w-4 sm:h-5 sm:w-5 animate-spin" />
+              ) : (
+                <Send className="mr-2 h-4 w-4 sm:h-5 sm:w-5" />
+              )}
               Subscribe
             </Button>
           </form>

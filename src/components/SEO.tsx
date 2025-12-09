@@ -15,7 +15,7 @@ interface SEOProps {
  */
 export function SEO({
   title = "JSR Spaces - Premium Coworking Space in Nasr City, Cairo",
-  description = "JSR Spaces is Cairo's premier coworking space in Nasr City. Offering hot desks, dedicated desks, private offices, and event spaces. 24/7 access, modern amenities, and a vibrant community.",
+  description = "JSR Spaces is Cairo's premier coworking space in Nasr City. Offering hot desks, dedicated desks, private offices, and event spaces. Extended access, modern amenities, and a vibrant community.",
   keywords = "coworking space Cairo, coworking space Nasr City, hot desk Cairo, private office Cairo, event space Cairo, shared office space",
   image = "https://www.jsrspaces.com/images/og-image.jpg",
   url = "https://www.jsrspaces.com",
@@ -127,7 +127,7 @@ export function StructuredData() {
         },
         {
           "@type": "LocationFeatureSpecification",
-          "name": "24/7 Access"
+          "name": "Extended Access"
         },
         {
           "@type": "LocationFeatureSpecification",
@@ -181,7 +181,7 @@ export function FAQStructuredData() {
         "name": "What's included in the membership?",
         "acceptedAnswer": {
           "@type": "Answer",
-          "text": "All memberships include high-speed WiFi, access to common areas, printing services, complimentary coffee and tea, community events, and mail handling. Higher-tier plans include dedicated desks, meeting rooms, and 24/7 access."
+          "text": "All memberships include high-speed WiFi, access to common areas, printing services, complimentary coffee and tea, community events, and mail handling. Higher-tier plans include dedicated desks, meeting rooms, and extended access."
         }
       },
       {
@@ -221,7 +221,7 @@ export function FAQStructuredData() {
         "name": "What are your operating hours?",
         "acceptedAnswer": {
           "@type": "Answer",
-          "text": "Our spaces are open Monday-Friday 8am-8pm and Saturday 9am-5pm. Dedicated Desk and Private Office members enjoy 24/7 access with their keycard. Reception services are available during business hours."
+          "text": "Our spaces are open Monday-Friday 8am-8pm and Saturday 9am-5pm. Dedicated Desk and Private Office members enjoy extended access with their keycard. Reception services are available during business hours."
         }
       },
       {
