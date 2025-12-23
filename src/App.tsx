@@ -4,6 +4,7 @@ import { HomePage } from "./pages/HomePage";
 import { ContactPage } from "./pages/ContactPage";
 import { ServicePage } from "./pages/ServicePage";
 import { VirtualPage } from "./pages/VirtualPage";
+import { CalculatorPage } from "./pages/CalculatorPage";
 import { trackVisitor, incrementUniqueVisitorCount } from "./utils/visitorTracking";
 import { hasCookieConsent } from "./components/CookieConsent";
 import { initAllAnalytics, trackPageViewAll } from "./utils/analytics";
@@ -47,6 +48,8 @@ function AppContent() {
         pageTitle = 'Our Services - JSR Spaces';
       } else if (location.pathname === '/virtual') {
         pageTitle = 'Virtual Office Solutions - JSR Spaces';
+      } else if (location.pathname === '/calculator') {
+        pageTitle = 'Pricing Calculator - JSR Spaces';
       }
       trackPageViewAll(location.pathname, pageTitle);
     }
@@ -102,6 +105,7 @@ function AppContent() {
       <Route path="/contact" element={<ContactPage />} />
       <Route path="/service" element={<ServicePage />} />
       <Route path="/virtual" element={<VirtualPage />} />
+      <Route path="/calculator" element={<CalculatorPage />} />
     </Routes>
   );
 }
