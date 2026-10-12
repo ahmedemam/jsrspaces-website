@@ -29,7 +29,24 @@
 
   See [ERPNext-INTEGRATION.md](./ERPNext-INTEGRATION.md) for detailed setup instructions.
 
-  ## Documentation
+## Deploy (static site on MasteryHub website VPS)
 
-  - [ERPNext Integration Guide](./ERPNext-INTEGRATION.md) - Complete guide for ERPNext integration and visitor tracking
-  
+Production marketing site runs **without** ERPNext or Caddy on `masteryhub-website-machine`. Host nginx owns 80/443 and proxies to the container on `127.0.0.1:8088`.
+
+```bash
+git pull
+./manage.sh deploy-static
+# first time only on the VPS:
+sudo cp deploy/nginx/jsrspaces.conf /etc/nginx/sites-available/jsrspaces
+sudo ln -sf /etc/nginx/sites-available/jsrspaces /etc/nginx/sites-enabled/jsrspaces
+sudo nginx -t && sudo systemctl reload nginx
+sudo certbot --nginx -d www.jsrspaces.com -d jsrspaces.com
+```
+
+Compose file: `docker-compose.website-only.yml` (website nginx only). Leave `erp.jsrspaces.com` DNS on the ERP host.
+
+Build-time ERP keys stay in a local `.env` on the VPS (never commit). See Configuration above.
+
+## Documentation
+
+- [ERPNext Integration Guide](./ERPNext-INTEGRATION.md) - Complete guide for ERPNext integration and visitor tracking

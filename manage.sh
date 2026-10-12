@@ -12,6 +12,7 @@ YELLOW='\033[1;33m'
 NC='\033[0m' # No Color
 
 COMPOSE_FILE="docker-compose.yml"
+WEBSITE_ONLY_COMPOSE_FILE="docker-compose.website-only.yml"
 DOCKER_COMPOSE_CMD=""  # Will be set by check_docker
 
 # Print functions
@@ -154,27 +155,33 @@ JSRSpaces Infrastructure Management
 Usage: ./manage.sh [command]
 
 Commands:
-    deploy      Pull latest, build website, restart, and cleanup
-    start       Start all services
-    stop        Stop all services
-    restart     Restart all services
-    status      Show service status
-    logs [svc]  Show logs (optionally for specific service)
-    update      Update and restart all services
-    proxy-reload Reload proxy configuration (after Caddyfile changes)
-    erp-init    Initialize ERPNext (run after first start)
-    clean       Remove all containers, networks, and volumes
-    help        Show this help message
+    deploy         Pull latest, build website, restart, and cleanup (full stack compose)
+    deploy-static  Pull, build, and up website-only stack (no ERP/Caddy; host nginx TLS)
+    start          Start all services
+    stop           Stop all services
+    restart        Restart all services
+    status         Show service status
+    logs [svc]     Show logs (optionally for specific service)
+    update         Update and restart all services
+    proxy-reload   Reload proxy configuration (after Caddyfile changes)
+    erp-init       Initialize ERPNext (run after first start)
+    clean          Remove all containers, networks, and volumes
+    help           Show this help message
 
 Examples:
+    ./manage.sh deploy-static
     ./manage.sh start
     ./manage.sh logs website
     ./manage.sh restart
 
 Services:
-    - proxy     Caddy reverse proxy (SSL/TLS)
+    - proxy     Caddy reverse proxy (SSL/TLS) [full stack only]
     - website   Nginx web server
-    - erp       ERPNext (backend, frontend, database, workers)
+    - erp       ERPNext (backend, frontend, database, workers) [full stack only]
+
+Website VPS (static only):
+    docker compose -f docker-compose.website-only.yml up -d
+    Host nginx: deploy/nginx/jsrspaces.conf → 127.0.0.1:8088
 EOF
 }
 
@@ -307,10 +314,64 @@ deploy() {
     print_status "Website should be live at: https://www.jsrspaces.com"
 }
 
+# Deploy static site only (MasteryHub website VPS): no ERPNext, no Caddy.
+# Host nginx terminates TLS and proxies to 127.0.0.1:8088.
+deploy_static() {
+    print_header "Deploying Website (static-only)"
+
+    if [ -d ".git" ]; then
+        print_status "Pulling latest from repository..."
+        git pull || print_warning "Git pull failed or no remote configured"
+    else
+        print_warning "Not a git repository, skipping pull"
+    fi
+
+    if ! command -v npm &> /dev/null; then
+        print_error "npm is not installed."
+        print_error "Install Node.js 20+: curl -fsSL https://deb.nodesource.com/setup_20.x | sudo -E bash - && sudo apt install -y nodejs"
+        exit 1
+    fi
+
+    if [ -d "build" ]; then
+        print_status "Fixing build directory permissions..."
+        CURRENT_USER=$(whoami)
+        sudo chown -R "$CURRENT_USER:$CURRENT_USER" build 2>/dev/null || true
+        sudo rm -rf build 2>/dev/null || rm -rf build 2>/dev/null || true
+    fi
+
+    mkdir -p build
+    chmod 755 build
+
+    print_status "Installing dependencies..."
+    npm ci 2>/dev/null || npm install
+
+    print_status "Building website..."
+    npm run build
+
+    if [ ! -f "build/index.html" ]; then
+        print_error "Build failed! Check errors above."
+        exit 1
+    fi
+
+    print_status "Starting website-only compose stack..."
+    check_docker
+    $DOCKER_COMPOSE_CMD -f "$WEBSITE_ONLY_COMPOSE_FILE" up -d
+
+    print_status "Cleaning up node_modules..."
+    rm -rf node_modules
+
+    print_status "Static deployment complete!"
+    print_status "Container publishes http://127.0.0.1:8088 (host nginx should proxy jsrspaces.com / www)"
+    print_status "Public URL after DNS + certbot: https://www.jsrspaces.com"
+}
+
 # Main script
 case "${1:-help}" in
     deploy)
         deploy
+        ;;
+    deploy-static)
+        deploy_static
         ;;
     start)
         start
